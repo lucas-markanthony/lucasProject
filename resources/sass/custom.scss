@@ -1,0 +1,88 @@
+@import '~@coreui/coreui/scss/coreui';
+@import '~@coreui/coreui/scss/bootstrap';
+
+
+
+.bottom {
+    border-bottom: 1px solid #ccc;
+}
+.top {
+    border-top: 1px solid #ccc;
+}
+
+.allborder {
+    border: 1px solid #ccc;
+}
+
+.blankBox{
+    border: 0;
+    outline: none;
+    outline-offset: 0;
+}
+
+.receipt {
+    /* Other styling... */
+    text-align: right;
+    clear: both;
+    float:left;
+    margin-right:15px;
+}
+
+.bg-primary {
+    background-color: #db1f1f !important;
+}
+.bg-light {
+    background-color: #f1cfcf !important;
+}
+
+.c-body {
+    background-color: #f0dbdb !important;
+}
+
+.c-sidebar {
+    color: #fff;    
+    background: #EE3436;
+}
+.c-sidebar .c-sidebar-nav-link:hover, .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
+    color: #fff;
+    background: #ff0505;
+}
+
+.c-sidebar .c-sidebar-nav-link:hover, .c-sidebar .c-sidebar-nav-dropdown-toggle:hover {
+    color: #fff;
+    background: #ff0505;
+}
+
+.input-group-text {
+    color: #ee6b6b;
+    background-color: #ffcbcb;
+    border-color: #e7a4a4;
+}
+.form-control:disabled, .form-control[readonly] {
+    background-color: #ebd9d9;
+    border-color: #e7a4a4;
+    opacity: 1;
+}
+
+.table-striped tbody tr:nth-of-type(2n+1) {
+    background-color: rgba(215, 12, 12, 0.1);
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #db1f1f;
+    border-color: #db1f1f;
+}
+
+.page-link {
+    color: #db1f1f;
+    background-color: #fff;
+    border-color: #d8dbe0;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    text-decoration: none;
+    color: #644545;
+    background-color: #e7cfcf;
+}
