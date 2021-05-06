@@ -34,7 +34,7 @@
                         @endif
                         <form method="post" action="{{ url('/login') }}">
                             @csrf
-                            <h3>Login</h3>
+                            <h3>Login Test</h3>
                             <p class="text-muted">Sign In to your account</p>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
