@@ -5,7 +5,7 @@
         <h1 class="text-black-50">You are logged in!</h1>
 
         <div class="card">
-            <div class="card-header">Line Chart test
+            <div class="card-header">Line Chart  testtest
             <div class="card-header-actions"><a class="card-header-action" href="http://www.chartjs.org" target="_blank"><small class="text-muted">docs</small></a></div>
             </div>
             <div class="card-body">
