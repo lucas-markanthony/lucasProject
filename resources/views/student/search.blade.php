@@ -13,7 +13,7 @@
                         <button class="btn btn-primary" type="button" disabled>
                             <i class="cil-magnifying-glass"></i>
                         </button></span>
-                        <input class="form-control" id="text_input" type="text" name="text_input" placeholder="" autocomplete="">
+                        <input class="form-control" id="text_input" type="text" maxlength="50" name="text_input" placeholder="" autocomplete="">
                         <span class="input-group-append">
                             <div class="col-md-9 col-form-label">
                                 <div class="form-check form-check-inline mr-1">
@@ -132,6 +132,13 @@
             getSection($(this).val());
         });
     });
+
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
 
     function getSection($gradeVal){
         var grade = $gradeVal;

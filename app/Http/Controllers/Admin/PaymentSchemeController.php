@@ -131,7 +131,7 @@ class PaymentSchemeController extends Controller
     public function addNewFee(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:255',
+            'nameProfile' => 'required|max:255',
             'fullAmount' => 'required|max:7',
         ]);
 
@@ -145,13 +145,13 @@ class PaymentSchemeController extends Controller
                 array('fees' => 
                 array(0 => 
                     array(
-                        'feeName' => $request->name,
+                        'feeName' => $request->nameProfile,
                         'fullAmount' => $request->fullAmount
                     )
             ));
         }else{
             $profile_fee['fees'][] = array(
-                'feeName' => $request->name,
+                'feeName' => $request->nameProfile,
                 'fullAmount' => $request->fullAmount
             );
         }

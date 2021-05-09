@@ -58,3 +58,42 @@
 </div>
 
 @endsection
+
+@section('third_party_scripts')
+<script type="text/javascript">
+
+    jQuery(document).ready(function(){
+
+        $('#userSave').hide();
+        $('#userCancel').hide();
+        $('#userUpdate').show();
+        $('.roleBox').prop('disabled', true);
+
+        $('#userUpdate').click(function() {
+            $('#userSave').show();
+            $('#userCancel').show();
+            $('#userUpdate').hide();
+
+            $('#name').prop('readOnly', false);
+            $('#email').prop('readOnly', false);
+            $('.roleBox').prop('disabled', false);
+        });
+
+        $('#userCancel').click(function() {
+            $('#userSave').hide();
+            $('#userCancel').hide();
+            $('#userUpdate').show();
+            
+            $('#name').prop('readOnly', true);
+            $('#email').prop('readOnly', true);
+            $('.roleBox').prop('disabled', true);
+        });
+
+
+    });
+
+    
+
+
+    </script>
+@endsection

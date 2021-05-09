@@ -25,7 +25,7 @@
     <div class="form-group">
         <div class="input-group">
             <div class="input-group-prepend"><span class="input-group-text">LRN<strong class="text-danger">*</strong></span></div>
-            <input class="form-control updateinput" id="lrn" type="text" name="lrn" placeholder="Lerner's reference number" @isset($student) value="{{ $student->lrn }}" @endisset readonly>
+            <input class="form-control updateinput" id="lrn" type="text" name="lrn" placeholder="Learner's reference number" @isset($student) value="{{ $student->lrn }}" @endisset maxlength="13" onkeypress="return isNumberKey(event)" readonly>
             @error('lrn')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -87,7 +87,7 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Last Name <strong class="text-danger">*</strong></span></div>
-                <input class="form-control updateinput" id="last_name" type="text" name="last_name" placeholder="Last Name" @isset($student) value="{{ $student->last_name }}" @endisset readonly>
+                <input class="form-control updateinput" id="last_name" type="text" name="last_name" placeholder="Last Name" @isset($student) value="{{ $student->last_name }}" maxlength="50" @endisset readonly>
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -96,30 +96,30 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">First Name<strong class="text-danger">*</strong></span></div>
-                <input class="form-control updateinput" id="first_name" type="text" name="first_name" placeholder="First Name" @isset($student) value="{{ $student->first_name }}" @endisset readonly>
+                <input class="form-control updateinput" id="first_name" type="text" name="first_name" placeholder="First Name" @isset($student) value="{{ $student->first_name }}" maxlength="50" @endisset readonly>
             </div>
         </div>
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Middle Name<strong class="text-danger">*</strong></span></div>
-                <input class="form-control updateinput" id="middle_name" type="text" name="middle_name" placeholder="Middle Name" @isset($student) value="{{ $student->middle_name }}" @endisset readonly>
+                <input class="form-control updateinput" id="middle_name" type="text" name="middle_name" placeholder="Middle Name" @isset($student) value="{{ $student->middle_name }}" @endisset maxlength="50" readonly>
             </div>
         </div>
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text">Extension Name</span></div>
-                <input class="form-control updateinput" id="ext_name" type="text" name="ext_name" placeholder="Extension Name" @isset($student) value="{{ $student->ext_name }}" @endisset readonly>
+                <input class="form-control updateinput" id="ext_name" type="text" name="ext_name" placeholder="Extension Name" @isset($student) value="{{ $student->ext_name }}" @endisset maxlength="25" readonly>
             </div>
         </div>
 
         <div class="form-group row">
-            <div class="col-2">
+            <div class="col-4">
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text">Age</span></div>
-                    <input class="form-control updateinput" id="age" type="text" name="age" placeholder="Age" @isset($student) value="{{ $student->age }}" @endisset readonly>
+                    <input class="form-control updateinput" id="age" type="text" name="age" placeholder="Age" @isset($student) value="{{ $student->age }}" @endisset maxlength="2" onkeypress="return isNumberKey(event)" readonly>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="input-group">
                     <div class="input-group-prepend pr-3"><span class="input-group-text">Gender<strong class="text-danger">*</strong></span></div>
                     <div class="form-check form-check-inline">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text">Birthdate<strong class="text-danger">*</strong></span></div>
                     <input class="form-control updateinput inputDisable" id="date_input1" type="date" name="date_input1" placeholder="date"  @isset($student) value="{{ $student->dob }}" @endisset disabled>
@@ -144,7 +144,7 @@
             <div class="col-6">
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text">EMAIL</span></div>
-                    <input class="form-control updateinput" id="email" type="text" name="email" placeholder="example@test.com" @isset($student) value="{{ $student->email }}" @endisset readonly>
+                    <input class="form-control updateinput" id="email" type="text" name="email" placeholder="example@test.com" @isset($student) value="{{ $student->email }}" @endisset maxlength="50" readonly>
                     <span class="input-group-text">
                         <i class="cil-envelope-open"></i>
                     </span>
@@ -153,7 +153,7 @@
             <div class="col-6">
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text">Contact No</span></div>
-                    <input class="form-control updateinput" id="contact_number" type="text" name="contact_number" placeholder="Contact Number" @isset($student) value="{{ $student->contact_no }}" @endisset readonly>
+                    <input class="form-control updateinput" id="contact_number" type="text" name="contact_number" placeholder="Contact Number" maxlength="13" onkeypress="return isNumberKey(event)" @isset($student) value="{{ $student->contact_no }}" @endisset readonly>
                     <span class="input-group-text">
                         <i class="cil-dialpad"></i>
                     </span>

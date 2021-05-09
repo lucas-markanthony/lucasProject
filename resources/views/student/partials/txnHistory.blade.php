@@ -42,7 +42,6 @@
     @endforeach
     </tbody>
 </table>
-{{ $transactionHistory->links() }}
 @else
     <h3>No Records Found...</h3>
 @endif

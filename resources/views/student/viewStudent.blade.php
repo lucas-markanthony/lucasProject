@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h1>View: {{ $student->lrn }}</h1></div>
+            <div class="card-header"><h3>View: {{ $student->lrn }}</h3></div>
             <div class="card-body">
                 <div class="col-md-12 mb-4">
                     <div class="nav-tabs-boxed">
@@ -209,6 +209,13 @@
         }else{
             $('select[name="new_section"]').empty();
         }
+    }
+
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
     }
 
     function showStatusButtons($status, $grade){

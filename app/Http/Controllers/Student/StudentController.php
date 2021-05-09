@@ -191,7 +191,7 @@ class StudentController extends Controller
 
                 $txnHistory = DB::table('payment_transactions')
                     ->where('payment_transactions.lrn', $id)
-                    ->orderBy('payment_transactions.created_at', 'asc')->paginate(10);
+                    ->orderBy('payment_transactions.id', 'desc')->take(10)->get();
 
                 $payments = StudentPayment::where('studentId', $student->id)->orderBy('created_at', 'asc')->get();
 

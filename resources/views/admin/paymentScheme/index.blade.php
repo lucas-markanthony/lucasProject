@@ -95,11 +95,11 @@
             <div class="modal-body">
                 <div class="input-group mb-2">
                     <div class="input-group-prepend"><span class="input-group-text">Fee Name</span></div>
-                    <input class="form-control" id="name" type="text" name="name">
+                    <input class="form-control" id="nameProfile" type="text" name="nameProfile">
                 </div>
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text">Full Amount</span></div>
-                    <input class="form-control" id="fullAmount" type="text" name="fullAmount">
+                    <input class="form-control" id="fullAmount" type="text"  maxlength="7" name="fullAmount" onkeypress="return isNumberKey(event)">
                 </div>
             </div>
             <div class="modal-footer">
@@ -157,7 +157,7 @@
             <div class="modal-body">
                 <div class="input-group">
                     <div class="input-group-prepend"><span class="input-group-text">Profile Name</span></div>
-                    <input class="form-control" id="name" type="text" name="name">
+                    <input class="form-control" id="name" type="text" name="name" maxlength="30">
                 </div>
             </div>
             <div class="modal-footer">
@@ -169,4 +169,58 @@
     </div>
 </div>
 
+@endsection
+
+
+@section('third_party_scripts')
+<script type="text/javascript">
+
+    jQuery(document).ready(function(){
+
+        $("#name").keyup(function() {
+            $(this).val($(this).val().toUpperCase());
+            if ($(this).val().match(/[ ]/g, "") != null) {
+                $(this).val($(this).val().replace(/[ ]/g, "_"));
+            }
+        });
+        $("#nameProfile").keyup(function() {
+            $(this).val($(this).val().toUpperCase());
+            if ($(this).val().match(/[ ]/g, "") != null) {
+                $(this).val($(this).val().replace(/[ ]/g, "_"));
+            }
+        });
+
+    });
+
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    
+
+    //32 space _95
+    function isWhiteSpace(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        var strInput = $("#name").val();
+        var strNewInput = $("#name").val();
+        
+        //if (charCode == 32){
+        //    strNewInput =  strInput.replace(/\s+/g, ''); 
+        //}
+
+        //console.log(evt.target['value']);
+        console.log(evt.target['id']);
+        $("#"+evt.target['id']).val('test');
+        //$("#" + evt.target['name']).val('test');
+
+        //$("#" + evt.target['id']).val(strNewInput);
+        //    return false;
+        //return true;
+        //name.replace(/\s/g, '') 
+    }
+
+    </script>
 @endsection

@@ -35,7 +35,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">LRN<strong class="text-danger">*</strong></span></div>
-                        <input class="form-control" id="lrn" type="text" name="lrn" placeholder="Lerner's reference number">
+                        <input class="form-control" id="lrn" type="text" name="lrn" placeholder="Lerner's reference number" maxlength="13" onkeypress="return isNumberKey(event)">
                         @error('lrn')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Last Name <strong class="text-danger">*</strong></span></div>
-                        <input class="form-control" id="last_name" type="text" name="last_name" placeholder="Last Name">
+                        <input class="form-control" id="last_name" type="text" name="last_name" placeholder="Last Name" maxlength="50">
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -63,30 +63,30 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">First Name<strong class="text-danger">*</strong></span></div>
-                        <input class="form-control" id="first_name" type="text" name="first_name" placeholder="First Name">
+                        <input class="form-control" id="first_name" type="text" name="first_name" placeholder="First Name" maxlength="50">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Middle Name<strong class="text-danger">*</strong></span></div>
-                        <input class="form-control" id="middle_name" type="text" name="middle_name" placeholder="Middle Name">
+                        <input class="form-control" id="middle_name" type="text" name="middle_name" placeholder="Middle Name" maxlength="50">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Extension Name</span></div>
-                        <input class="form-control" id="ext_name" type="text" name="ext_name" placeholder="Extension Name">
+                        <input class="form-control" id="ext_name" type="text" name="ext_name" placeholder="Extension Name" maxlength="25">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-2">
+                    <div class="col-4">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Age</span></div>
-                            <input class="form-control" id="age" type="text" name="age" placeholder="Age">
+                            <input class="form-control" id="age" type="text" name="age" placeholder="Age" maxlength="2" onkeypress="return isNumberKey(event)">
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="input-group">
                             <div class="input-group-prepend pr-3"><span class="input-group-text">Gender<strong class="text-danger">*</strong></span></div>
                             <div class="form-check form-check-inline">
@@ -99,7 +99,7 @@
                               </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Birthdate<strong class="text-danger">*</strong></span></div>
                             <input class="form-control" id="date_input" type="date" name="date_input" placeholder="date">
@@ -111,7 +111,7 @@
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">EMAIL</span></div>
-                            <input class="form-control" id="email" type="text" name="email" placeholder="example@test.com">
+                            <input class="form-control" id="email" type="text" name="email" placeholder="example@test.com" maxlength="50">
                             <span class="input-group-text">
                                 <i class="cil-envelope-open"></i>
                             </span>
@@ -120,7 +120,7 @@
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Contact No</span></div>
-                            <input class="form-control" id="contact_number" type="text" name="contact_number" placeholder="Contact Number">
+                            <input class="form-control" id="contact_number" type="text" name="contact_number" placeholder="Contact Number" maxlength="13" onkeypress="return isNumberKey(event)">
                             <span class="input-group-text">
                                 <i class="cil-dialpad"></i>
                             </span>
@@ -141,13 +141,13 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">House Number & Street</span></div>
-                        <input class="form-control" id="address_house" type="text" name="address_house" placeholder="House number and street">
+                        <input class="form-control" id="address_house" type="text" name="address_house" placeholder="House number and street" maxlength="50">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Subdivision/Barangay</span></div>
-                        <input class="form-control" id="address_barangay" type="text" name="address_barangay" placeholder="Subdivision / Barangay">
+                        <input class="form-control" id="address_barangay" type="text" name="address_barangay" placeholder="Subdivision / Barangay" maxlength="50">
                     </div>
                 </div>
 
@@ -155,13 +155,13 @@
                     <div class="col-8">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">City/Municipality</span></div>
-                            <input class="form-control" id="address_city" type="text" name="address_city" placeholder="City / Municipality">
+                            <input class="form-control" id="address_city" type="text" name="address_city" placeholder="City / Municipality" maxlength="50">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Postal/ZipCode</span></div>
-                            <input class="form-control" id="postal" type="text" name="postal" placeholder="Postal / Zip Code">
+                            <input class="form-control" id="postal" type="text" name="postal" placeholder="Postal / Zip Code" maxlength="6" onkeypress="return isNumberKey(event)">
                         </div>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                     <div class="col-8">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Province</span></div>
-                            <input class="form-control" id="address_province" type="text" name="address_province" placeholder="Province">
+                            <input class="form-control" id="address_province" type="text" name="address_province" placeholder="Province" maxlength="50">
                         </div>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                     <div class="col-8">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Country</span></div>
-                            <input class="form-control" id="address_country" type="text" name="address_country" placeholder="Country">
+                            <input class="form-control" id="address_country" type="text" name="address_country" placeholder="Country" maxlength="50">
                         </div>
                     </div>
                 </div>
@@ -196,20 +196,20 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Father's Name</span></div>
-                        <input class="form-control" id="father_name" type="text" name="father_name" placeholder="Last name, First name, Middle name">
+                        <input class="form-control" id="father_name" type="text" name="father_name" placeholder="Last name, First name, Middle name" maxlength="50">
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Occupation</span></div>
-                            <input class="form-control" id="father_occupation" type="text" name="father_occupation" placeholder="Father's Occupation">
+                            <input class="form-control" id="father_occupation" type="text" name="father_occupation" placeholder="Father's Occupation" maxlength="50">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Contact No</span></div>
-                            <input class="form-control" id="father_contact" type="text" name="father_contact" placeholder="Father's Contact number">
+                            <input class="form-control" id="father_contact" type="text" name="father_contact" placeholder="Father's Contact number" maxlength="13" onkeypress="return isNumberKey(event)">
                             <span class="input-group-text">
                                 <i class="cil-dialpad"></i>
                             </span>
@@ -220,20 +220,20 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Mother's Name</span></div>
-                        <input class="form-control" id="mother_name" type="text" name="mother_name" placeholder="Last name, First name, Middle name">
+                        <input class="form-control" id="mother_name" type="text" name="mother_name" placeholder="Last name, First name, Middle name" maxlength="50">
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Occupation</span></div>
-                            <input class="form-control" id="mother_occupation" type="text" name="mother_occupation" placeholder="Mother's Occupation">
+                            <input class="form-control" id="mother_occupation" type="text" name="mother_occupation" placeholder="Mother's Occupation" maxlength="50">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Contact No</span></div>
-                            <input class="form-control" id="mother_contact" type="text" name="mother_contact" placeholder="Mother's Contact number">
+                            <input class="form-control" id="mother_contact" type="text" name="mother_contact" placeholder="Mother's Contact number" maxlength="13" onkeypress="return isNumberKey(event)">
                             <span class="input-group-text">
                                 <i class="cil-dialpad"></i>
                             </span>
@@ -244,20 +244,20 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Guardian's Name</span></div>
-                        <input class="form-control" id="guardian_name" type="text" name="guardian_name" placeholder="Last name, First name, Middle name">
+                        <input class="form-control" id="guardian_name" type="text" name="guardian_name" placeholder="Last name, First name, Middle name" maxlength="50">
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Occupation</span></div>
-                            <input class="form-control" id="guardian_occupation" type="text" name="guardian_occupation" placeholder="Guardian's Occupation">
+                            <input class="form-control" id="guardian_occupation" type="text" name="guardian_occupation" placeholder="Guardian's Occupation" maxlength="50">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Contact No</span></div>
-                            <input class="form-control" id="guardian_contact" type="text" name="guardian_contact" placeholder="Guardian's Contact number">
+                            <input class="form-control" id="guardian_contact" type="text" name="guardian_contact" placeholder="Guardian's Contact number" maxlength="13" onkeypress="return isNumberKey(event)">
                             <span class="input-group-text">
                                 <i class="cil-dialpad"></i>
                             </span>
@@ -280,22 +280,22 @@
                     <div class="col-8">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Elementary School Name</span></div>
-                            <input class="form-control" id="elemtary_school" type="text" name="elementary_school" placeholder="Elementary School Name">
+                            <input class="form-control" id="elemtary_school" type="text" name="elementary_school" placeholder="Elementary School Name" maxlength="100">
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="input-group">
                             <div class="input-group-prepend"><span class="input-group-text">Elementary School Year</span></div>
-                            <input class="form-control" id="elementary_schoolyr_to" type="text" name="elementary_schoolyr_to" placeholder="YYYY">
+                            <input class="form-control" id="elementary_schoolyr_to" type="text" name="elementary_schoolyr_to" placeholder="YYYY" maxlength="4" onkeypress="return isNumberKey(event)">
                             <p class="px-1">_</p>
-                            <input class="form-control" id="elementary_schoolyr_from" type="text" name="elementary_schoolyr_from" placeholder="YYYY">
+                            <input class="form-control" id="elementary_schoolyr_from" type="text" name="elementary_schoolyr_from" placeholder="YYYY" maxlength="4" onkeypress="return isNumberKey(event)">
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">Elementary School Address</span></div>
-                        <input class="form-control" id="elementary_school_address" type="text" name="elementary_school_address" placeholder="Address">
+                        <input class="form-control" id="elementary_school_address" type="text" name="elementary_school_address" placeholder="Address" maxlength="100">
                     </div>
                 </div>
                 
@@ -363,6 +363,13 @@
         }else{
             $('select[name="section"]').empty();
         }
+    }
+
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
     }
 </script>
 @endsection

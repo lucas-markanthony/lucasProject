@@ -16,11 +16,9 @@
           integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
           crossorigin="anonymous"/>
 
-          <script src="{{ mix('js/users.js') }}"></script>
-
     @yield('third_party_stylesheets')
-
     @stack('page_css')
+
 </head>
 
 <body class="c-app">
@@ -49,7 +47,6 @@
 </div>
 
 <script src="{{ mix('js/app.js') }}" defer></script>
-
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.4.0/perfect-scrollbar.js"></script>
