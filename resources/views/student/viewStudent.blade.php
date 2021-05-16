@@ -71,6 +71,7 @@
         $('.updateinput').prop('readOnly', true);
         $('.inputDisable').prop('disabled', true);    
 
+
         $('#school_year').val(eschoolYear).change();
         $('#grade').val(egrade).change();
         $('#section').val(esection).change();
@@ -85,20 +86,31 @@
         //document.getElementById('new_grade').value = egrade;
         //document.getElementById('new_section').value = esection;
 
-        
 
-        getSection($('#grade').val(),esection);
+        getGrade(eschoolYear, egrade);
+        getSection(eschoolYear+"|"+egrade, esection);
+
+        jQuery('#school_year').change(function(e){
+            e.preventDefault();
+            getGrade($(this).val(), egrade);
+        });
+
+        jQuery('#new_school_year').change(function(e){
+            e.preventDefault();
+            getNewGrade($(this).val());
+        });
+
+        getNewSection($('#new_school_year').val()+"|"+$('#new_grade').val(), esection);
+        
         jQuery('#grade').change(function(e){
             e.preventDefault();
-            getSection($(this).val());
+            getSection($('#school_year').val() + "|" + $(this).val(), esection);
         });
 
-        getNewSection($('#new_grade').val(), esection);
         jQuery('#new_grade').change(function(e){
             e.preventDefault();
-            getNewSection($(this).val());
+            getNewSection($('#new_school_year').val() + "|" + $(this).val(), esection);
         });
-
 
 
         $('#update').click(function() {
@@ -161,7 +173,26 @@
             $("#new_elementary_school_address").val($('#elementary_school_address').val());
         })
 
+
     });
+        
+    function exportfilePDF($lrn){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        event.preventDefault();
+        $.ajax({
+            url: '/registrar/export/registerFormExport/'+$lrn,
+            type: "GET",
+            success:function(response){
+            
+            },
+            error: function(response) {
+                }
+            });
+    }
 
     function getSection($gradeVal, $currentValue){
         var grade = $gradeVal;
@@ -187,7 +218,60 @@
         }
     }
 
-    function getNewSection($gradeVal, $currentValue){
+    function getGrade($dataVal, $currentValue){
+        var data = $dataVal;
+        var data1 = "";
+                if(data) {
+                    $.ajax({
+                    url: '/ajax/grade/'+data,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="grade"]').empty();
+                        $.each(data, function(key, value) {
+                            if(value['grade'] == $currentValue){
+                                $('select[name="grade"]').append('<option value="'+ value['grade'] +'" selected>'+ value['grade'] +'</option>');
+                            }else{
+                                $('select[name="grade"]').append('<option value="'+ value['grade'] +'">'+ value['grade'] +'</option>');
+                            }
+                        
+                    });
+                }
+            });
+            
+            
+        }else{
+            $('select[name="grade"]').empty();
+        }
+
+        getSection($('#school_year').val() + "|" + $('#grade').val());
+    }
+
+    function getNewGrade($dataVal){
+        var data = $dataVal;
+        var data1 = "";
+                if(data) {
+                    $.ajax({
+                    url: '/ajax/grade/'+data,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="new_grade"]').empty();
+                        $.each(data, function(key, value) {
+                        $('select[name="new_grade"]').append('<option value="'+ value['grade'] +'">'+ value['grade'] +'</option>');
+                    });
+                }
+            });
+            
+            
+        }else{
+            $('select[name="new_grade"]').empty();
+        }
+
+        getNewSection($('#new_school_year').val() + "|7" );
+    }
+
+    function getNewSection($gradeVal){
         var grade = $gradeVal;
                 if(grade) {
                     $.ajax({
@@ -197,12 +281,7 @@
                     success:function(data) {
                         $('select[name="new_section"]').empty();
                         $.each(data, function(key, value) {
-                            if(value['section'] == $currentValue){
-                                $('select[name="new_section"]').append('<option value="'+ value['section'] +'" selected>'+ value['section'] +'</option>');
-                            }else{
-                                $('select[name="new_section"]').append('<option value="'+ value['section'] +'">'+ value['section'] +'</option>');
-                            }
-                        
+                            $('select[name="new_section"]').append('<option value="'+ value['section'] +'">'+ value['section'] +'</option>');
                     });
                 }
             });

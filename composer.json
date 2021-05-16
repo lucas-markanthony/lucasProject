@@ -13,7 +13,9 @@
         "infyomlabs/laravel-ui-coreui": "^3.0",
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "maatwebsite/excel": "^3.1",
+        "phpoffice/phpspreadsheet": "^1.17"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

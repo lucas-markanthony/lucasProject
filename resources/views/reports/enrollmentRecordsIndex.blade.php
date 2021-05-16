@@ -1,32 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h1>Search</h1></div>
+            <div class="card-header"><h3>Enrollment Report</h3></div>
             <div class="card-body">
-                <form method="POST" action="{{ route('registrar.student.searchRecord') }}">
+                <form method="POST" action="{{ route('report.enrollment.showSearchEnrollment') }}">
                 @csrf
-                    <div class="input-group"><span class="input-group-prepend">
-                        <button class="btn btn-primary" type="button" disabled>
-                            <i class="cil-magnifying-glass"></i>
-                        </button></span>
-                        <input class="form-control" id="text_input" type="text" maxlength="50" name="text_input" placeholder="" autocomplete="">
-                        <span class="input-group-append">
-                            <div class="col-md-9 col-form-label">
-                                <div class="form-check form-check-inline mr-1">
-                                    <input class="form-check-input" id="input_type1" type="radio" checked="checked" value="lrn" name="input_type">
-                                    <label class="form-check-label" for="input_type1">LRN</label>
-                                </div>
-                                <div class="form-check form-check-inline mr-1">
-                                    <input class="form-check-input" id="input_type2" type="radio" value="lname" name="input_type">
-                                    <label class="form-check-label" for="input_type2">LAST NAME</label>
-                                </div>
-                            </div>
-                        </span>
-                    </div>
+
+                <div class="mt-3 mb-3 bottom">
+                    <strong>Filter by</strong>
+                </div>
 
                     <div class="row mt-2">
                         <div class="form-group col-sm-4">
@@ -40,15 +25,32 @@
                         <div class="form-group col-sm-4">
                             <label for="grade">Grade</label><span class="text-danger"> *</span>
                             <select class="form-control" id="grade" name="grade">
-                                <option value="all">all</option>
-                                @foreach ($gradeList as $grade)
-                                    <option value="{{ $grade->grade }}">{{ $grade->grade }}</option>
-                                @endforeach
                             </select>
                         </div>
                         <div class="form-group col-sm-4">
                             <label for="section">Section</label><span class="text-danger"> *</span>
                             <select class="form-control" id="section" name="section">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 mb-3 bottom">
+                        <strong>Sort by</strong>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="form-group col-sm-6">
+                            <label for="sort_gender">Gender</label><span class="text-danger"> *</span>
+                            <select class="form-control" id="sort_gender" name="sort_gender">
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="sort_lname">Last Name</label><span class="text-danger"> *</span>
+                            <select class="form-control" id="sort_lname" name="sort_lname">
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
                             </select>
                         </div>
                     </div>
@@ -60,32 +62,36 @@
     </div>
 </div>
 
-
-@isset($searchResult)
+@isset($searchResultData)
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h2>Search Result</h2></div>
+            <div class="card-header"><h4>Search Result</h4></div>
             <div class="card-body">
                 <div class="mx-2">
-                    @if (count($searchResult) >= 1)
+                    @if (count($searchResultData) >= 1)
                         <table class="table table-responsive-sm table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
                                     <th>LRN</th>
-                                    <th>Name</th>
-                                    <th>School_YEAR</th>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Last Name</th>
+                                    <th>Gender</th>
+                                    <th>School Year</th>
                                     <th>Grade</th>
                                     <th>Section</th>
                                     <th>Enrollment_Status</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach($searchResult as $student)
+                            @foreach($searchResultData as $student)
                                 <tr>
                                     <td scope="row">{{ $student->lrn }}</td>
-                                    <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }} {{ $student->ext_name }}</td>
+                                    <td>{{ $student->first_name }}</td>
+                                    <td>{{ $student->middle_name }}</td>
+                                    <td>{{ $student->last_name }} {{ $student->ext_name }}</td>
+                                    <td>{{ $student->gender }}</td>
                                     <td>{{ $student->school_year }}</td>
                                     <td>{{ $student->grade }}</td>
                                     <td>{{ $student->section }}</td>
@@ -101,14 +107,11 @@
                                                 <span class="badge badge-danger">{{ $student->enrollment_status }}</span>
                                         @endswitch
                                     </td>
-                                    <td>
-                                        <a class="btn btn-sm btn-primary align-middle" href="{{ route('registrar.student.show', $student->lrn) }}" role="button">View</a>
-                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-                        {{ $searchResult->links() }}
+                        {{ $searchResultData->links() }}
                     @else
                         <h3>No Records Found...</h3>
                     @endif
@@ -120,12 +123,13 @@
 </div>
 @endisset
 
+
 @endsection
 
 @section('third_party_scripts')
 <script type="text/javascript">
     jQuery(document).ready(function(){
-        getActiveSchYear()
+        getActiveSchYear();
 
         getGrade($('#school_year').val());
         getSection($('#school_year').val() + "|" + $('#grade').val());
@@ -140,6 +144,7 @@
             e.preventDefault();
             getGrade($(this).val());
         });
+
     });
 
     function isNumberKey(evt){
@@ -207,5 +212,6 @@
             }
         });
     }
+    
 </script>
-@endsection
+@endsection 

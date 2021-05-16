@@ -104,7 +104,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary loadMe">Create</button>
             </div>
         </form>
       </div>
@@ -126,7 +126,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary"
+          <button type="button" class="btn btn-primary loadMe"
               onClick="event.preventDefault();
               document.getElementById('delete-fee-form-{{ $paymentSchemedata->id }}').submit()">Delete</button>
         </div>
@@ -162,7 +162,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary loadMe">Create</button>
             </div>
         </form>
       </div>

@@ -5,6 +5,7 @@ use Admin\UserController;
 use Student\StudentController;
 use Admin\PaymentSchemeController;
 use Cashier\PaymentTransactionController;
+use Reports\Reports;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,11 +33,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->midd
 
 Route::get('/ajax/section/{id}',array('as'=>'ajax.section','uses'=>'HomeController@section'));
 
+Route::get('/ajax/grade/{id}',array('as'=>'ajax.grade','uses'=>'HomeController@grade'));
+
 // Admin Routes
 Route::prefix('admin')->middleware(['auth','auth.isAdmin'])->name('admin.')->group(function(){
     Route::resource('/users', UserController::class);
     Route::resource('/paymentScheme', PaymentSchemeController::class);
     Route::post('/paymentScheme/addNewFee', ['as' => 'paymentScheme.addNewFee', 'uses' => 'Admin\PaymentSchemeController@addNewFee']);
+
+    Route::get('/schoolYear', ['as' => 'schoolYear.index', 'uses' => 'Admin\PaymentSchemeController@schoolyearIndex']);
+    Route::post('/schoolYear/addNewSchoolYearConfig', ['as' => 'schoolYear.addNewSchoolYearConfig', 'uses' => 'Admin\PaymentSchemeController@addNewSchoolYearConfig']);
 });
 
 
@@ -58,4 +64,12 @@ Route::prefix('cashier')->middleware('auth')->name('cashier.')->group(function()
 
     Route::post('/student/searchRecord', ['as' => 'student.searchRecord', 'uses' => 'Cashier\PaymentTransactionController@searchRecord']);
     Route::post('/student/storePayment', ['as' => 'student.storePayment', 'uses' => 'Cashier\PaymentTransactionController@storePayment']);
+});
+
+// Reports Routes 
+Route::prefix('report')->middleware('auth')->name('report.')->group(function(){
+    Route::get('/enrollment/index', ['as' => 'enrollment.index', 'uses' => 'Reports\Reports@enrollmentRecordsIndex']);
+    Route::get('/transaction/index', ['as' => 'transaction.index', 'uses' => 'Reports\Reports@transactionRecordsIndex']);
+
+    Route::post('/enrollment/showSearchEnrollment', ['as' => 'enrollment.showSearchEnrollment', 'uses' => 'Reports\Reports@showSearchEnrollment']);
 });

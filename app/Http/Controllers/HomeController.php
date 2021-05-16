@@ -39,9 +39,23 @@ class HomeController extends Controller
 
     public function section($id)
     {
+        $idData = explode('|', $id);
+        $schoolyear = $idData[0];
+        $grade = $idData[1];
+
         $sectionsdata = DB::table('gradeSection')
-        ->where('grade', '=', $id)
-        ->select('section')->get();
+        ->where('schoolyear', '=', $schoolyear)
+        ->where('grade', '=', $grade)
+        ->select('section')->distinct()->get(['section']);
         return json_encode($sectionsdata);
+    }
+
+    public function grade($id)
+    {
+        $gradesdata = DB::table('gradeSection')
+        ->where('schoolyear', '=', $id)
+        ->select('grade')->distinct()->get(['grade']);
+
+        return json_encode($gradesdata);
     }
 }

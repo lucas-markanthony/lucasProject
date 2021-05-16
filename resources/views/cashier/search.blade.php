@@ -125,19 +125,28 @@
 @section('third_party_scripts')
 <script type="text/javascript">
     jQuery(document).ready(function(){
-        getSection($('#grade').val());
+        getActiveSchYear()
+
+        getGrade($('#school_year').val());
+        getSection($('#school_year').val() + "|" + $('#grade').val());
+        
 
         jQuery('#grade').change(function(e){
             e.preventDefault();
-            getSection($(this).val());
+            getSection($('#school_year').val() +"|"+ $('#grade').val());
+        });
+
+        jQuery('#school_year').change(function(e){
+            e.preventDefault();
+            getGrade($(this).val());
         });
     });
 
-    function getSection($gradeVal){
-        var grade = $gradeVal;
-                if(grade) {
+    function getSection($dataVal){
+        var data = $dataVal;
+                if(data) {
                     $.ajax({
-                    url: '/ajax/section/'+grade,
+                    url: '/ajax/section/'+data,
                     type: "GET",
                     dataType: "json",
                     success:function(data) {
@@ -151,6 +160,45 @@
         }else{
             $('select[name="section"]').empty();
         }
+    }
+
+    function getGrade($dataVal){
+        var data = $dataVal;
+        var data1 = "";
+                if(data) {
+                    $.ajax({
+                    url: '/ajax/grade/'+data,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('select[name="grade"]').empty();
+                        $('select[name="grade"]').append('<option value="all">all</option>');
+                        $.each(data, function(key, value) {
+                        $('select[name="grade"]').append('<option value="'+ value['grade'] +'">'+ value['grade'] +'</option>');
+                    });
+                }
+            });
+            
+            getSection($('#school_year').val() + "|" + $('#grade').val());
+        }else{
+            $('select[name="grade"]').empty();
+        }
+    }
+
+    function getActiveSchYear(){
+        var currentYear = '2022';
+        var d = new Date();
+        var currentYear = d.getFullYear();
+
+        $("#school_year option").each(function()
+        {
+            // Add $(this).val() to your list
+            $item = $(this).val().split("-");
+            if($item[0] == currentYear){
+                $('#school_year').val($(this).val()).change();
+                //console.log('test');
+            }
+        });
     }
 </script>
 @endsection

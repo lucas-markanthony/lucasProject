@@ -7,22 +7,22 @@
 @can('is-admin')
 <li class="c-sidebar-nav-dropdown">
     <a class="c-sidebar-nav-dropdown-toggle" href="#">
-        <i class="c-sidebar-nav-icon cil-people"></i>Admin
+        <i class="c-sidebar-nav-icon cil-people loadMe"></i>Admin
     </a>
     <ul class="c-sidebar-nav-dropdown-items">
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('admin.users.index') }}">
-                <i class="c-sidebar-nav-icon cil-user"></i>  User Management
+                <i class="c-sidebar-nav-icon cil-user loadMe"></i>  User Management
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('admin.paymentScheme.index') }}">
-                <i class="c-sidebar-nav-icon cil-library-add"></i>  Payment Profile Management
+                <i class="c-sidebar-nav-icon cil-library-add loadMe"></i>  Payment Profile Management
             </a>
         </li>
         <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="icons/coreui-icons-free.html">
-                <i class="c-sidebar-nav-icon cil-library-add"></i>  Menu Management
+            <a class="c-sidebar-nav-link" href="{{ route('admin.schoolYear.index') }}">
+                <i class="c-sidebar-nav-icon cil-library-add loadMe"></i>  Menu Management
             </a>
         </li>
     </ul>
@@ -36,12 +36,12 @@
     <ul class="c-sidebar-nav-dropdown-items">
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('registrar.student.index') }}">
-                <i class="c-sidebar-nav-icon cil-library-add"></i>  Register New Student
+                <i class="c-sidebar-nav-icon cil-library-add loadMe"></i>  Register New Student
             </a>
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('registrar.student.create') }}">
-                <i class="c-sidebar-nav-icon cil-magnifying-glass"></i>  Search
+                <i class="c-sidebar-nav-icon cil-magnifying-glass loadMe"></i>  Search
             </a>
         </li>
     </ul>
@@ -54,14 +54,31 @@
     <ul class="c-sidebar-nav-dropdown-items">
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('cashier.student.index') }}">
-                <i class="c-sidebar-nav-icon cil-cash"></i>  Payment
+                <i class="c-sidebar-nav-icon cil-cash loadMe"></i>  Payment
             </a>
         </li>
     </ul>
 </li>
 
-<li class="c-sidebar-nav-item">
-    <a class="c-sidebar-nav-link" href="{{ route('admin.users.index') }}">
-        <i class="c-sidebar-nav-icon  cil-user"></i>Reports
+<li class="c-sidebar-nav-dropdown">
+    <a class="c-sidebar-nav-dropdown-toggle" href="#">
+        <i class="c-sidebar-nav-icon cil-people"></i>Reports
     </a>
+    <ul class="c-sidebar-nav-dropdown-items">
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('report.enrollment.index') }}">
+                <i class="c-sidebar-nav-icon cil-library-add loadMe"></i>  Enrollment Records
+            </a>
+        </li>
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('report.transaction.index') }}">
+                <i class="c-sidebar-nav-icon cil-magnifying-glass loadMe"></i>  Transaction Records
+            </a>
+        </li>
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('report.transaction.index') }}">
+                <i class="c-sidebar-nav-icon cil-magnifying-glass loadMe"></i> Grades
+            </a>
+        </li>
+    </ul>
 </li>

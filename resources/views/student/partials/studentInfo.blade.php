@@ -10,8 +10,7 @@
     <button type="button" class="btn btn-dark mr-2" id="fail" name="fail" data-toggle="modal" data-target="#modalFail" data-whatever="@getbootstrap">Fail</button>
     <button type="button" class="btn btn-danger mr-2" id="drop" name="drop" data-toggle="modal" data-target="#modalDrop" data-whatever="@getbootstrap">Drop</button>
 
-    <button type="button" class="btn btn-info mr-2" onClick="event.preventDefault();
-    document.getElementById('export-student-form-{{ $student->lrn }}').submit()">
+    <button type="button" class="btn btn-info mr-2 loadMe" onClick="exportfilePDF({{ $student->lrn }})">
         <span><i class="cib-adobe-acrobat-reader"></i></span>
         Export Form
     </button>
@@ -43,9 +42,6 @@
         <div class="form-group col-sm-1">
             <label for="grade">Grade</label><span class="text-danger"> *</span>
             <select class="form-control inputDisable" id="grade" name="grade"@isset($student) value="{{ $studentEnrollment->grade }}" @endisset disabled>
-                @foreach ($gradeList as $grade)
-                    <option value="{{ $grade->grade }}">{{ $grade->grade }}</option>
-                @endforeach
             </select>
         </div>
         <div class="form-group col-sm-2">

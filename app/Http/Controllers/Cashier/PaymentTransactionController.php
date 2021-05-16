@@ -25,7 +25,7 @@ class PaymentTransactionController extends Controller
         $gradedata = DB::table('gradeSection')
         ->select('grade')->distinct()->get(['grade']);
         return view('cashier.search', [
-            'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
             'gradeList' => $gradedata
         ]);
     }
@@ -208,6 +208,8 @@ class PaymentTransactionController extends Controller
 
                 $payments = StudentPayment::where('studentId', $student->id)->orderBy('created_at', 'asc')->get();
 
+                //dd(DB::table('gradeSection')->distinct()->get(['schoolyear']));
+
                 return view('cashier.student', [
                     'student' => $student,
                     'studentEnrollment' => $enrollment,
@@ -215,13 +217,13 @@ class PaymentTransactionController extends Controller
                     'enrollmentHistory' => $enrollmentHistory->paginate(10),
                     'remainingBalance' => $remainingBalance,
                     'paymentProfiles' => paymentScheme::all(),
-                    'schoolyears' =>  $schoolyears->distinct()->get(['school_year']),
+                    'schoolyears' => $schoolyears->distinct()->get(['school_year']),
                     'gradeList' => $gradedata
                 ]);
         }else{
             $request->session()->flash('error', 'Student not found');
             return view('cashier.search', [
-                'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+                'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
                 'gradeList' => $gradedata
             ]);
         }
@@ -300,7 +302,7 @@ class PaymentTransactionController extends Controller
             $students = $query->paginate(10);
         return view('cashier.search', [
             'searchResult' => $students,
-            'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
             'gradeList' => $gradedata
         ]);
     }

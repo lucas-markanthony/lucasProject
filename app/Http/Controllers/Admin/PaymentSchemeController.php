@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\paymentScheme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 
 class PaymentSchemeController extends Controller
@@ -22,6 +23,67 @@ class PaymentSchemeController extends Controller
             'paymentProfiles' => paymentScheme::all()
         ]);
     }
+
+
+    public function schoolyearIndex()
+    {
+        $subjectGroup = DB::table('subjectGroup')->get();
+
+        return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+    }
+
+    public function addNewSchoolYearConfig(Request $request)
+    {
+        //dd($request);
+        $response = false;
+        $subjectGroup = DB::table('subjectGroup')->get();
+
+        $schoolYear = $request->schoolYear;
+        $listGradeSection = $request->summary;
+        $gradeSection = explode('|', $listGradeSection);
+
+        $checkSchoolYear = DB::table('gradeSection')
+            ->select('subjectgroup')
+            ->where('schoolyear', $schoolYear)->first();
+
+        if($checkSchoolYear != null || $checkSchoolYear != ''){
+            $request->session()->flash('error', 'School year already configured');
+            return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+        }
+
+        //dd($paymentList);
+
+        for($i=1; $i < count($gradeSection); $i++){
+            $item = explode('~', $gradeSection[$i]);
+            $grade = $item[0];
+            $section = $item[1];
+            $subjectGroup1 = $item[2];
+
+            $response = $this->insertConfig($schoolYear, $grade, $section, $subjectGroup1);
+        }
+
+        if($response == false){
+            $request->session()->flash('error', 'Config failed');
+            return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+        }
+
+        $request->session()->flash('success', 'Config success');
+        return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+    }
+
+    private function insertConfig($schoolyear, $grade, $section, $subjectgroup){
+            $response1 = false;
+
+            $response1 = DB::table('gradeSection')->insert([
+                'schoolyear' => $schoolyear, 
+                'grade' => $grade, 
+                'section' => $section, 
+                'subjectgroup' => $subjectgroup 
+            ]);
+
+            return $response1;
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -46,21 +108,6 @@ class PaymentSchemeController extends Controller
             ]);
 
             $initalFee = '';
-            /*$initalFee =
-                array('fees' => 
-                array(0 => 
-                    array(
-                        'feeName' => 'Tuition',
-                        'fullAmount' => '0'
-                    )
-            ));
-
-            $initalFee['fees'][] = array(
-                'feeName' => 'Miscellaneous',
-                'fullAmount' => '0'
-            );*/
-
-            //$paymentScheme = paymentScheme::create(array('name' => $request->name, 'fees' => $initalFee));
 
             $paymentScheme = new paymentScheme;
             $paymentScheme->name = $request->name;

@@ -26,7 +26,7 @@ class StudentController extends Controller
 
         return view('student.register', [
             'paymentProfiles' => paymentScheme::all(),
-            'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
             'gradeList' => $gradedata
         ]);
     }
@@ -41,7 +41,7 @@ class StudentController extends Controller
         $gradedata = DB::table('gradeSection')
         ->select('grade')->distinct()->get(['grade']);
         return view('student.search', [
-            'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
             'gradeList' => $gradedata
         ]);
     }
@@ -68,10 +68,9 @@ class StudentController extends Controller
             'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
             'payment_profile' => 'required',
-            'date_input' => 'required',
-            'email' => 'required|max:255',
-            'contact_number' => 'required',
         ]);
+
+        $response = false;
         $gradedata = DB::table('gradeSection')
             ->select('grade')->distinct()->get(['grade']);
 
@@ -84,7 +83,7 @@ class StudentController extends Controller
             $request->session()->flash('error', 'Please select payment scheme');
             return view('student.register', [
                 'paymentProfiles' => paymentScheme::all(),
-                'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+                'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
                 'gradeList' => $gradedata
             ]);
         }
@@ -124,6 +123,7 @@ class StudentController extends Controller
 
             //Create Enrollment status StudentEnrollment
             $student = Student::where('lrn', $request->lrn)->first();
+            $paymentschemes = paymentScheme::where('id', $request->payment_profile)->first();
 
             $newEnroll = new StudentEnrollment;
 
@@ -131,13 +131,13 @@ class StudentController extends Controller
             $newEnroll->grade = $request->grade;
             $newEnroll->section = $request->section;
             $newEnroll->studentId = $student->id;
-            $newEnroll->schemeID =  $request->payment_profile;
+            $newEnroll->schemeID =  $paymentschemes->name;
             $newEnroll->enrollment_status = 'ENROLLED';
             $newEnroll->save();
 
             //Create Payment record
             $enrollment = StudentEnrollment::where('studentId', $student->id)->orderBy('created_at', 'desc')->first();
-            $paymentschemes = paymentScheme::where('id', $request->payment_profile)->first();
+            
 
             foreach($paymentschemes->fees['fees'] as $payment){
 
@@ -151,15 +151,51 @@ class StudentController extends Controller
                 $newPayment->save();
             }
 
+            //Create Academic record
+            $subjectGroupName = DB::table('gradeSection')
+            ->select('subjectgroup')
+            ->where('schoolyear', $enrollment->school_year)
+            ->where('grade', $enrollment->grade)
+            ->where('section', $enrollment->section)->first();
+
+            //dd($enrollment->school_year . "|" . $enrollment->grade . "|" . $enrollment->section );
+            //dd($subjectGroupName);
+
+            $subjectGroup = DB::table('subjectGroup')
+            ->where('name', $subjectGroupName->subjectgroup)->first();
+
+            //dd($subjectGroup);
+
+            $subjects = explode('|', $subjectGroup->subjectgroup);
+
+            for($i=0; $i < count($subjects); $i++){
+                $response = $this->insertStudentRecordContainer($student->id, $enrollment->id, $subjects[$i]);
+            }
+
             //send email to new student
 
             $request->session()->flash('success', 'You have successfully Registered New Student');
 
             return view('student.register', [
                 'paymentProfiles' => paymentScheme::all(),
-                'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+                'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
                 'gradeList' => $gradedata
             ]);
+    }
+
+    private function insertStudentRecordContainer($studentId, $enrollmentId, $subject){
+            $response1 = false;
+
+            $response1 = DB::table('student_records')->insert([
+                ['studentId' => $studentId, 
+                'enrollmentId' => $enrollmentId, 
+                'subject' => $subject,
+                'created_at' => Carbon::now('Asia/Manila')->toDateTimeString(),
+                'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString() ]
+
+            ]);
+
+            return $response1;
     }
 
     /**
@@ -203,12 +239,12 @@ class StudentController extends Controller
                     'remainingBalance' => $remainingBalance,
                     'paymentProfiles' => paymentScheme::all(),
                     'transactionHistory' => $txnHistory,
-                    'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+                    'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
                     'gradeList' => $gradedata
                 ]);
         }else{
             return view('student.search', [
-                'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+                'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
                 'gradeList' => $gradedata
             ]);
         }
@@ -262,7 +298,7 @@ class StudentController extends Controller
             $students = $query->paginate(10);
         return view('student.search', [
             'searchResult' => $students,
-            'schoolyears' =>  DB::table('schoolyear')->distinct()->get(['schoolyear']),
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
             'gradeList' => $gradedata
         ]);
     }

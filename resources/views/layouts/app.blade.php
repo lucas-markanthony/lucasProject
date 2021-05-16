@@ -22,8 +22,8 @@
 </head>
 
 <body class="c-app">
+@include('partials.load')
 @include('layouts.sidebar')
-
 <div class="c-wrapper">
     <header class="c-header c-header-light c-header-fixed">
         @include('layouts.header')
@@ -48,11 +48,20 @@
 
 <script src="{{ mix('js/app.js') }}" defer></script>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.4.0/perfect-scrollbar.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
 
 @yield('third_party_scripts')
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    $('.loader_bg').hide();
+
+    $('.loadMe').click(function() {
+        $('.loader_bg').show();
+    });
+});
+</script>
 
 </body>
 </html>
