@@ -1,14 +1,14 @@
 <div class="float-right my-2">
-    <button type="button" class="btn btn-primary mr-2" id="update" name="update">Update</button>
+    <button type="button" class="btn-sm btn-primary mr-2" id="update" name="update">Update</button>
 
-    <button type="button" class="btn btn-primary mr-2" id="save" name="save" data-toggle="modal" data-target="#modalUpdate" data-whatever="@getbootstrap" style="display:none">Save</button>
-    <button type="button" class="btn btn-info mr-2" id="cancel" name="cancel" style="display:none">Cancel</button>
+    <button type="button" class="btn-sm btn-primary mr-2" id="save" name="save" data-toggle="modal" data-target="#modalUpdate" data-whatever="@getbootstrap" style="display:none">Save</button>
+    <button type="button" class="btn-sm btn-info mr-2" id="cancel" name="cancel" style="display:none">Cancel</button>
 
-    <button type="button" class="btn btn-success mr-2" id="enroll" name="enroll"  data-toggle="modal" data-target="#modalEnroll" data-whatever="@getbootstrap" style="display:none">Enroll</button>
-    <button type="button" class="btn btn-info mr-2" id="complete" name="complete" data-toggle="modal" data-target="#modalComplete" data-whatever="@getbootstrap">Complete</button>
-    <button type="button" class="btn btn-light mr-2" id="graduate" name="graduate" data-toggle="modal" data-target="#modalGraduate" data-whatever="@getbootstrap">Graduate</button>
-    <button type="button" class="btn btn-dark mr-2" id="fail" name="fail" data-toggle="modal" data-target="#modalFail" data-whatever="@getbootstrap">Fail</button>
-    <button type="button" class="btn btn-danger mr-2" id="drop" name="drop" data-toggle="modal" data-target="#modalDrop" data-whatever="@getbootstrap">Drop</button>
+    <button type="button" class="btn-sm btn-success mr-2" id="enroll" name="enroll"  data-toggle="modal" data-target="#modalEnroll" data-whatever="@getbootstrap" style="display:none">Enroll</button>
+    <button type="button" class="btn-sm btn-info mr-2" id="complete" name="complete" data-toggle="modal" data-target="#modalComplete" data-whatever="@getbootstrap">Complete</button>
+    <button type="button" class="btn-sm btn-light mr-2" id="graduate" name="graduate" data-toggle="modal" data-target="#modalGraduate" data-whatever="@getbootstrap">Graduate</button>
+    <button type="button" class="btn-sm btn-dark mr-2" id="fail" name="fail" data-toggle="modal" data-target="#modalFail" data-whatever="@getbootstrap">Fail</button>
+    <button type="button" class="btn-sm btn-danger mr-2" id="drop" name="drop" data-toggle="modal" data-target="#modalDrop" data-whatever="@getbootstrap">Drop</button>
 
     <button type="button" class="btn btn-info mr-2 loadMe" onClick="exportfilePDF({{ $student->lrn }})">
         <span><i class="cib-adobe-acrobat-reader"></i></span>
@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-sm-2">
+        <div class="form-group col-sm-3">
             <label for="school-year">School Year</label><span class="text-danger"> *</span>
             <select class="form-control" id="school_year" name="school_year" @isset($student) value="{{ $studentEnrollment->school_year }}" @endisset disabled>
                 @foreach ($schoolyears as $schoolyear)
@@ -39,12 +39,12 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group col-sm-1">
+        <div class="form-group col-sm-3">
             <label for="grade">Grade</label><span class="text-danger"> *</span>
             <select class="form-control inputDisable" id="grade" name="grade"@isset($student) value="{{ $studentEnrollment->grade }}" @endisset disabled>
             </select>
         </div>
-        <div class="form-group col-sm-2">
+        <div class="form-group col-sm-3">
             <label for="section">Section</label><span class="text-danger"> *</span>
             <select class="form-control inputDisable" id="section" name="section"  disabled>
             </select>

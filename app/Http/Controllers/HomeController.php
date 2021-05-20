@@ -58,4 +58,25 @@ class HomeController extends Controller
 
         return json_encode($gradesdata);
     }
+
+    public function subject($id)
+    {
+        $idData = explode('|', $id);
+        $schoolyear = $idData[0];
+        $grade = $idData[1];
+        $section = $idData[2];
+
+        $subjectGroup = DB::table('gradeSection')
+                ->join('subjectGroup', 'gradeSection.subjectgroup', '=', 'subjectGroup.name')
+                ->select('subjectGroup.subjectgroup')
+                ->where('.gradeSection.schoolyear', $schoolyear)
+                ->where('.gradeSection.grade', $grade)
+                ->where('.gradeSection.section', $section)
+                ->first();
+
+
+        $responseData = explode('|', $subjectGroup->subjectgroup);
+
+        return json_encode($responseData);
+    }
 }

@@ -22,15 +22,15 @@ class StudentRecords extends Migration
             $table->integer('enrollmentId');
 
             $table->string('subject', 50);
-            $table->integer('first_grading')->nullable();
+            $table->string('first_grading', 5)->nullable();
             $table->string('first_grading_status', 50)->default('PENDING');
-            $table->integer('second_grading')->nullable();
+            $table->string('second_grading', 5)->nullable();
             $table->string('second_grading_status', 50)->default('PENDING');
-            $table->integer('third_grading')->nullable();
+            $table->string('third_grading', 5)->nullable();
             $table->string('third_grading_status', 50)->default('PENDING');
-            $table->integer('fourth_grading')->nullable();
+            $table->string('fourth_grading', 5)->nullable();
             $table->string('fourth_grading_status', 50)->default('PENDING');
-            $table->integer('final_grading')->nullable();
+            $table->string('final_grading', 5)->nullable();
             $table->string('final_grading_status', 50)->default('PENDING');
 
         });

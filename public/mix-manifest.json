@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/js/users.js": "/js/users.js",
+    "/js/jquery.min.js": "/js/jquery.min.js",
     "/css/app.css": "/css/app.css",
     "/css/bootstrapmin.css": "/css/bootstrapmin.css",
     "/css/exportPDF.css": "/css/exportPDF.css",

@@ -68,7 +68,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <input type="text" id="{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount" name="{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount" value="{{ $item->balance }}" readonly>
+                                        <input type="text" class="numberInput" id="{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount" name="{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount" value="{{ $item->balance }}" size="7"  onkeypress="return isNumberKey(event)" readonly>
                                     </td>
                                 </tr>
                             @endif
@@ -86,8 +86,8 @@
                 <div class="card-body">
                     <table class="table" style="width: 100%">
                         <colgroup>
-                            <col span="1" style="width: 70%;">
-                            <col span="1" style="width: 30%;">
+                            <col span="1" style="width: 60%;">
+                            <col span="1" style="width: 40%;">
                         </colgroup>
 
                         <tbody>
@@ -106,12 +106,12 @@
                                         @endforeach
                                 </td>
                                 <td>
-                                    <div class="float:right">
+                                    <div class="float:left">
                                         <p class="h6">Amount</p>
                                             @foreach ($schoolyears as $schoolyear)
                                                 <div>
-                                                    <label class="mr-1" for="exampleInputName2">&#8369</label>
-                                                    <input id="subTotalAmount-{{ $schoolyear->school_year }}" class="blankBox" type="text"  size="10" value="0">
+                                                    <label class="mr-1" for="subTotalAmount-{{ $schoolyear->school_year }}">&#8369</label>
+                                                    <input id="subTotalAmount-{{ $schoolyear->school_year }}" class="blankBox" type="text"  size="10" value="0" readonly>
                                                 </div>
                                             @endforeach
                                     </div>
@@ -123,8 +123,8 @@
                                 </td>
                                 <td>
                                     <div class="float:right">
-                                        <label class="mr-1" for="exampleInputName2">&#8369</label>
-                                        <input id="totalAmount" type="text" class="blankBox" value="0" readonly>
+                                        <label class="mr-1" for="totalAmount">&#8369</label>
+                                        <input id="totalAmount" type="text" class="blankBox" value="0" size="10" readonly>
                                     </div>
                                 </td>
                             </tr>    
@@ -148,12 +148,12 @@
             <div class="card-header">
                 <div class="form-check">
                     <label class="form-check-label" for="checkAll_0">
-                        <p class="h3 m-1">No Payment selected</p>
+                        <p class="h5 m-1">No Pending Payment</p>
                     </label>
                 </div>              
             </div>
             <div class="card-body">
-                <h3>No Data Found...</h3>
+                <h5>No Data Found...</h5>
             </div>
         </div>
     </div>
@@ -164,8 +164,8 @@
             <div class="card-body">
                 <table class="table" style="width: 100%">
                     <colgroup>
-                        <col span="1" style="width: 70%;">
-                        <col span="1" style="width: 30%;">
+                        <col span="1" style="width: 60%;">
+                        <col span="1" style="width: 40%;">
                     </colgroup>
 
                     <tbody>
@@ -178,15 +178,15 @@
                             <td>
                                 <p class="h6">Subtotal</p>
                                 <div class="my-2">
-                                    <input id="subTotalItem-0" class="blankBox" type="text"  size="15" value="No Payment Selected">
+                                    <input id="subTotalItem-0" class="blankBox" type="text" size="15" value="No Payment Selected">
                                 </div>
                             </td>
                             <td>
-                                <div class="float:right">
+                                <div class="float:left">
                                     <p class="h6">Amount</p>
                                     <div>
                                         <label class="mr-1" for="exampleInputName2">&#8369</label>
-                                        <input id="subTotalAmount-0" class="blankBox" type="text"  size="10" value="0">
+                                        <input id="subTotalAmount-0" class="blankBox" type="text"  size="10" value="0" readonly>
                                     </div>
                                 </div>
                             </td>
@@ -198,7 +198,7 @@
                             <td>
                                 <div class="float:right">
                                     <label class="mr-1" for="exampleInputName2">&#8369</label>
-                                    <input id="totalAmount" type="text" class="blankBox" value="0" readonly>
+                                    <input id="totalAmount" type="text" class="blankBox" value="0" size="10" readonly>
                                 </div>
                             </td>
                         </tr>    
@@ -213,12 +213,12 @@
 </div>
 
 @if(count($schoolyears) >= 1)
-<!-- update student details Modal -->
+<!-- payment Modal -->
 <div class="modal fade" id="modalSubmit" tabindex="-1" role="dialog" aria-labelledby="modalSubmitTitle" aria-hidden="true">
     <div class="modal-dialog modal-primary" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalSubmitTitle">Update Student</h5>
+          <h5 class="modal-title" id="modalSubmitTitle">Submit Payment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -248,7 +248,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Update Student</button>
+                <button type="submit" class="btn btn-primary">Submit Payment</button>
             </div>
         </form>
       </div>
@@ -263,8 +263,22 @@
     @if(count($schoolyears) >= 1)
         <script type="text/javascript">
             jQuery(document).ready(function(){
-            // <input id="paymentSummary" name="paymentSummary" type="hidden">
-            // <input id="submitlrn" name="submitlrn" type="hidden" value="{{ $student->lrn }}">
+                
+                var max_chars = 7;
+
+                $('.numberInput').keydown( function(e){
+                    if ($(this).val().length >= max_chars) { 
+                        $(this).val($(this).val().substr(0, max_chars));
+                    }
+                });
+
+                $('.numberInput').keyup( function(e){
+                    if ($(this).val().length >= max_chars) { 
+                        $(this).val($(this).val().substr(0, max_chars));
+                    }
+                });
+
+
                 $('#modalSubmit').on('shown.coreui.modal', function (e) {
                     $("#lrn_payment").val($('#submitlrn').val());
                     $("#items").val($('#paymentSummary').val());
@@ -305,9 +319,6 @@
                     }
                 });
 
-        //year name amount
-        //name year amount function
-        //year name textbox
                 $('.checktrigger').click(function() {
                     var inputValue = $(this).val();
                     var res = inputValue.split("|");
@@ -364,6 +375,13 @@
 
                 });
             });
+
+            function isNumberKey(evt){
+                var charCode = (evt.which) ? evt.which : evt.keyCode
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                    return false;
+                return true;
+            }
 
             function addpayment($name, $schoolyr, $amount){
                 var arrayInput = $("#paymentSummary").val();

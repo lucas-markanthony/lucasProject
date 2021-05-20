@@ -18,3 +18,4 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/bootstrapmin.scss', 'public/css');
 
 mix.js('resources/js/users.js', 'public/js');
+mix.js('resources/js/jquery.min.js', 'public/js');

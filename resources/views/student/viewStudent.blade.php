@@ -71,24 +71,19 @@
         $('.updateinput').prop('readOnly', true);
         $('.inputDisable').prop('disabled', true);    
 
+        getGrade(eschoolYear, egrade);
+        getSection(eschoolYear+"|"+egrade, esection);
 
         $('#school_year').val(eschoolYear).change();
         $('#grade').val(egrade).change();
         $('#section').val(esection).change();
-        //document.getElementById('school_year').value = eschoolYear;
-        //document.getElementById('grade').value = egrade;
-        //document.getElementById('section').value = esection;
 
         $('#new_school_year').val(eschoolYear).change();
         $('#new_grade').val(egrade).change();
         $('#new_section').val(esection).change();
-        //document.getElementById('new_school_year').value = eschoolYear;
-        //document.getElementById('new_grade').value = egrade;
-        //document.getElementById('new_section').value = esection;
 
-
-        getGrade(eschoolYear, egrade);
-        getSection(eschoolYear+"|"+egrade, esection);
+        
+        
 
         jQuery('#school_year').change(function(e){
             e.preventDefault();

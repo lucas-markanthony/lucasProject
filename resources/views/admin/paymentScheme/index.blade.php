@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h3>Payment Scheme Management</h3></div>
+            <div class="card-header"><h4>Payment Scheme Management</h4></div>
             <div class="card-body">
                 <div class="btn-group">
                     <button class="btn btn-info" type="button">Profiles</button>
@@ -31,19 +31,13 @@
         <div class="card">
             <div class="card-header"><strong>View</strong> <small>Form</small></div>
             <div class="card-body mx-3">
+                <div class="float-right my-2">
+                    <button type="button" class="btn-sm btn-success mx-2" data-toggle="modal" data-target="#modalAddFee" data-whatever="@getbootstrap">Add Fee</button>
+                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#deleteFeeModalCenter">
+                        Delete
+                    </button>
+                </div>
                 <div class="form-group row">
-                    <div class="col-md-10">
-                    </div>
-                    <div class="col-md-2">
-                        <div class="input-group float-right">
-                            <button type="button" class="btn btn-success mx-2" data-toggle="modal" data-target="#modalAddFee" data-whatever="@getbootstrap">Add Fee</button>
-
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteFeeModalCenter">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                    
 
                     <div class="input-group mx-2 pt-2 pb-3">
                         <div class="input-group-prepend"><span class="input-group-text">Payment Scheme Name</span></div>

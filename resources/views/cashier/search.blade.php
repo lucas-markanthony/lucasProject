@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h1>Cashier Menu</h1></div>
+            <div class="card-header"><h4>Cashier Menu</h4></div>
             <div class="card-body">
                 <form method="POST" action="{{ route('cashier.student.searchRecord') }}">
                 @csrf
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     
-                    <button class="btn-lg btn-primary float-right" type="submit"><i class="cil-magnifying-glass"></i>  Search</button>
+                    <button class="btn-sm btn-primary float-right" type="submit"><i class="cil-magnifying-glass"></i>  Search</button>
                 </form>
             </div> 
         </div>

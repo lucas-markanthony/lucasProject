@@ -22,7 +22,12 @@
         </li>
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('admin.schoolYear.index') }}">
-                <i class="c-sidebar-nav-icon cil-library-add loadMe"></i>  Menu Management
+                <i class="c-sidebar-nav-icon cil-library-add loadMe"></i>  New School year Setup
+            </a>
+        </li>
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('admin.subjectGroup.index') }}">
+                <i class="c-sidebar-nav-icon cil-library-add loadMe"></i>  New Subject Group Setup
             </a>
         </li>
     </ul>
@@ -42,6 +47,24 @@
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('registrar.student.create') }}">
                 <i class="c-sidebar-nav-icon cil-magnifying-glass loadMe"></i>  Search
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="c-sidebar-nav-dropdown">
+    <a class="c-sidebar-nav-dropdown-toggle" href="#">
+        <i class="c-sidebar-nav-icon cil-people"></i>Student Records
+    </a>
+    <ul class="c-sidebar-nav-dropdown-items">
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('registrar.student.studentClassRecordIndex') }}">
+                <i class="c-sidebar-nav-icon cil-magnifying-glass loadMe"></i> Records By Class
+            </a>
+        </li>
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('registrar.student.studentRecordIndex') }}">
+                <i class="c-sidebar-nav-icon cil-magnifying-glass loadMe"></i> Records By Student
             </a>
         </li>
     </ul>

@@ -29,7 +29,16 @@ class PaymentSchemeController extends Controller
     {
         $subjectGroup = DB::table('subjectGroup')->get();
 
-        return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+        return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup,
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
+        ]);
+    }
+
+    public function subjectGroupIndex()
+    {
+        $subjectGroup = DB::table('subjectGroup')->paginate(10);
+
+        return view('admin.subjectGroup.index', ['subjectGroups' => $subjectGroup]);
     }
 
     public function addNewSchoolYearConfig(Request $request)
@@ -69,6 +78,50 @@ class PaymentSchemeController extends Controller
 
         $request->session()->flash('success', 'Config success');
         return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+    }
+
+    public function addNewSubjectGroupConfig(Request $request)
+    {
+        //dd($request);
+        $subjects = explode('|', $request->subectSummary);
+        $finalString = "";
+        $response1 = false;
+
+        $checkGroupName = DB::table('subjectGroup')
+            ->select('name')
+            ->where('name', $request->subjectGroupName)->first();
+
+        if($request->subectSummary == null || $checkGroupName == ''){
+            $request->session()->flash('error', 'Configuration failed. Please try again');
+            return view('admin.subjectGroup.index', []);
+        }
+
+        if($checkGroupName != null || $checkGroupName != ''){
+            $request->session()->flash('error', 'Subject group name already configured');
+            return view('admin.subjectGroup.index', []);
+        }
+
+        for($i=1; $i < count($subjects); $i++){
+            
+            if($i == 1){
+                $finalString = $subjects[$i];
+            }else{
+                $finalString = $finalString . "|" . $subjects[$i];
+            }
+        }
+
+        $response1 = DB::table('subjectGroup')->insert([
+            'name' => $request->subjectGroupName, 
+            'subjectgroup' => $finalString
+        ]);
+
+        if($response1 == true){
+            $request->session()->flash('success', 'Config success');
+            return view('admin.subjectGroup.index', []);
+        }else{
+            $request->session()->flash('error', 'Configuration failed. Please try again');
+            return view('admin.subjectGroup.index', []);
+        }
     }
 
     private function insertConfig($schoolyear, $grade, $section, $subjectgroup){

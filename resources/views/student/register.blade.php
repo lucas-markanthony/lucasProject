@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-prepend"><span class="input-group-text">LRN<strong class="text-danger">*</strong></span></div>
-                        <input class="form-control" id="lrn" type="text" name="lrn" placeholder="Lerner's reference number" maxlength="13" onkeypress="return isNumberKey(event)" value="{{ old('lrn') }}">
+                        <input class="form-control" id="lrn" type="text" name="lrn" placeholder="Learner's reference number" maxlength="13" onkeypress="return isNumberKey(event)" value="{{ old('lrn') }}">
                         @error('lrn')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -216,7 +216,7 @@
 
                 <div class="form-group">
                     <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">Mother's Name</span></div>
+                        <div class="input-group-prepend"><span class="input-group-text">Mother's Maiden Name</span></div>
                         <input class="form-control toUpperCase" id="mother_name" type="text" name="mother_name" placeholder="Last name, First name, Middle name" maxlength="50" value="{{ old('mother_name') }}">
                     </div>
                 </div>
@@ -346,9 +346,9 @@
 
         $(".toUpperCase").keyup(function() {
             $(this).val($(this).val().toUpperCase());
-            if ($(this).val().match(/[ ]/g, "") != null) {
-                $(this).val($(this).val().replace(/[ ]/g, "_"));
-            }
+            //if ($(this).val().match(/[ ]/g, "") != null) {
+            //    $(this).val($(this).val().replace(/[ ]/g, "_"));
+            //}
         });
 
     });

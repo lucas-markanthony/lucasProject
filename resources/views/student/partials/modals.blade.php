@@ -32,7 +32,7 @@
           </div>
 
           <div class="row mx-3 ">
-            <div class="form-group col-sm-3">
+            <div class="form-group col-sm-4">
                 <label for="school-year">School Year</label><span class="text-danger"> *</span>
                 <select class="form-control" id="new_school_year" name="new_school_year">
                     @foreach ($schoolyears as $schoolyear)
@@ -40,7 +40,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group col-sm-2">
+            <div class="form-group col-sm-4">
                 <label for="grade">Grade</label><span class="text-danger"> *</span>
                 <select class="form-control" id="new_grade" name="new_grade">
                     @foreach ($gradeList as $grade)
@@ -48,7 +48,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group col-sm-3">
+            <div class="form-group col-sm-4">
                 <label for="section">Section</label><span class="text-danger"> *</span>
                 <select class="form-control" id="new_section" name="new_section">
                 </select>
@@ -56,8 +56,8 @@
         </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success">Enroll</button>
+                <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn-success">Enroll</button>
             </div>
         </form>
       </div>
@@ -88,8 +88,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Drop</button>
+                <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn-danger">Drop</button>
             </div>
         </form>
       </div>
@@ -120,8 +120,8 @@
           </div>
 
           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-dark">Fail</button>
+              <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn-sm btn-dark">Fail</button>
           </div>
       </form>
     </div>
@@ -152,8 +152,8 @@
         <div class="row mx-3 ">
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-info">Complete</button>
+              <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn-sm btn-info">Complete</button>
           </div>
       </form>
     </div>
@@ -184,8 +184,8 @@
         <div class="row mx-3 ">
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-info">Graduate</button>
+              <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn-sm btn-info">Graduate</button>
           </div>
       </form>
     </div>
@@ -398,8 +398,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Update Student</button>
+                <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn-primary">Update Student</button>
             </div>
         </form>
       </div>

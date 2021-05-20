@@ -28,13 +28,13 @@
                 <div>
                     @switch($item->status)
                         @case('SUCCESS')
-                            <h3><span class="badge badge-success">{{ $item->status }}</span></h3>
+                            <h5><span class="badge badge-success">{{ $item->status }}</span></h5>
                         @break
                         @case('FAILED')
-                            <h3><span class="badge badge-info">{{ $item->status }}</span></h3>
+                            <h5><span class="badge badge-info">{{ $item->status }}</span></h5>
                         @break
                         @default
-                            <h3><span class="badge badge-dark">{{ $item->status }}</span></h3>
+                            <h5><span class="badge badge-dark">{{ $item->status }}</span></h5>
                     @endswitch
                 </div>
             </td>

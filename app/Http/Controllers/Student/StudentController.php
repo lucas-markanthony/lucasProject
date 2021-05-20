@@ -14,11 +14,7 @@ use Carbon\Carbon;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $gradedata = DB::table('gradeSection')
@@ -31,11 +27,152 @@ class StudentController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function studentRecordIndex()
+    {
+        return view('student.studentRecords', [
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
+        ]);
+    }
+
+    public function studentClassRecordIndex()
+    {
+        return view('student.studentClassRecords', [
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
+        ]);
+    }
+
+    public function searchClass(Request $request)
+    {
+
+        $classRecords = DB::table('students')
+                ->join('student_enrollments', 'students.id', '=', 'student_enrollments.studentId')
+                ->join('student_records', 'student_enrollments.id', '=', 'student_records.enrollmentId')
+                ->where('student_enrollments.school_year', $request->school_year)
+                ->where('student_enrollments.grade', $request->grade)
+                ->where('student_enrollments.section', $request->section)
+                ->where('student_records.subject', $request->subject)
+                ->orderBy('students.gender', 'asc')
+                ->orderBy('students.last_name', 'asc')
+                ->orderBy('students.first_name', 'asc')->get();
+
+        return view('student.studentClassRecords', [
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
+            'classrecords' => $classRecords,
+            'school_year' => $request->school_year,
+            'grade' => $request->grade,
+            'section' => $request->section,
+            'subject' => $request->subject
+        ]);
+
+    }
+
+    public function searchStudentRecord(Request $request)
+    {
+
+       $studentDetails = DB::table('students')
+            ->join('student_enrollments', 'students.id', '=', 'student_enrollments.studentId')
+            ->where('student_enrollments.school_year', $request->school_year)
+            ->select('student_enrollments.id', 'students.lrn', 'students.first_name', 
+            'students.last_name', 'students.middle_name', 'students.ext_name', 'student_enrollments.grade', 
+            'student_enrollments.school_year', 'student_enrollments.section', 'students.gender')
+            ->where('students.lrn', $request->text_input)->first();
+
+        $studentRecords = DB::table('student_records')
+            ->where('enrollmentId', $studentDetails->id)->get();
+        
+        //dd($studentRecords);
+
+        return view('student.studentRecords', [
+            'studentdetails' => $studentDetails,
+            'studentrecords' => $studentRecords,
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
+        ]);
+
+    }
+
+    public function updateGrades(Request $request)
+    {
+
+        $inputGrade = $request->save_details_summary;
+        $enrollmentID = "";
+        $grade = "";
+
+        $gradeList = explode('|', $inputGrade);
+
+        for($i=1; $i < count($gradeList); $i++){
+            $item = explode('~', $gradeList[$i]);
+            $quarter = $item[0];
+            $enrollmentID = $item[1];
+            $grade = $item[2];
+            $quarterStatus = "";
+            
+            $affected = DB::table('student_records')
+                ->where('enrollmentId', $enrollmentID)
+                ->where('subject', $request->save_details_subject);
+
+            switch ($quarter) {
+                case "inputGrid1":
+                    $affected->update([
+                        'first_grading' => $grade,
+                        'first_grading_status' => "UPDATED",
+                        'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()
+                    ]);
+                break;
+                case "inputGrid2":
+                    $affected->update([
+                        'second_grading' => $grade,
+                        'second_grading_status' => "UPDATED",
+                        'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()
+                    ]);
+                break;
+                case "inputGrid3":
+                    $affected->update([
+                        'third_grading' => $grade,
+                        'third_grading_status' => "UPDATED",
+                        'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()
+                    ]);
+                break;
+                case "inputGrid4":
+                    $affected->update([
+                        'fourth_grading' => $grade,
+                        'fourth_grading_status' => "UPDATED",
+                        'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()
+                    ]);
+                break;
+                default:
+                    $affected->update([
+                        'final_grading' => $grade,
+                        'final_grading_status' => "UPDATED",
+                        'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()
+                    ]);
+            } 
+        }
+
+        $request->session()->flash('success', 'You have successfully Updated Student');
+
+        $classRecords = DB::table('students')
+                ->join('student_enrollments', 'students.id', '=', 'student_enrollments.studentId')
+                ->join('student_records', 'student_enrollments.id', '=', 'student_records.enrollmentId')
+                ->where('student_enrollments.school_year', $request->school_year)
+                ->where('student_enrollments.grade', $request->grade)
+                ->where('student_enrollments.section', $request->section)
+                ->where('student_records.subject', $request->subject)
+                ->orderBy('students.gender', 'asc')
+                ->orderBy('students.last_name', 'asc')
+                ->orderBy('students.first_name', 'asc')->get();
+
+
+        return view('student.studentClassRecords', [
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
+            'classrecords' => $classRecords,
+            'school_year' => $request->save_details_schoolyear,
+            'grade' => $request->save_details_grade,
+            'section' => $request->save_details_section,
+            'subject' => $request->save_details_subject
+        ]);
+
+    }
+
     public function create()
     {
         $gradedata = DB::table('gradeSection')
@@ -46,17 +183,6 @@ class StudentController extends Controller
         ]);
     }
 
-    public function search()
-    {
-        return view('student.search');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //Input Validation
@@ -158,13 +284,8 @@ class StudentController extends Controller
             ->where('grade', $enrollment->grade)
             ->where('section', $enrollment->section)->first();
 
-            //dd($enrollment->school_year . "|" . $enrollment->grade . "|" . $enrollment->section );
-            //dd($subjectGroupName);
-
             $subjectGroup = DB::table('subjectGroup')
             ->where('name', $subjectGroupName->subjectgroup)->first();
-
-            //dd($subjectGroup);
 
             $subjects = explode('|', $subjectGroup->subjectgroup);
 
@@ -250,12 +371,7 @@ class StudentController extends Controller
         }
     }
 
-     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
+
     public function searchRecord(Request $request, Student $student)
     {
         $gradedata = DB::table('gradeSection')
@@ -362,6 +478,22 @@ class StudentController extends Controller
         //generate PDF file - registration form
         //
 
+        //Create Academic record
+        $subjectGroupName = DB::table('gradeSection')
+        ->select('subjectgroup')
+        ->where('schoolyear', $enrollment->school_year)
+        ->where('grade', $enrollment->grade)
+        ->where('section', $enrollment->section)->first();
+
+        $subjectGroup = DB::table('subjectGroup')
+        ->where('name', $subjectGroupName->subjectgroup)->first();
+
+        $subjects = explode('|', $subjectGroup->subjectgroup);
+
+        for($i=0; $i < count($subjects); $i++){
+            $response = $this->insertStudentRecordContainer($student->id, $enrollment->id, $subjects[$i]);
+        }
+
         $request->session()->flash('success', 'You have successfully Enrolled Student');
         return redirect(route('registrar.student.show', $request->lrn));
     }
@@ -440,18 +572,6 @@ class StudentController extends Controller
 
     }
 
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, Student $student)
-    {
-        dd($request);
-    }
 
     /**
      * Update the specified resource in storage.
@@ -534,16 +654,5 @@ class StudentController extends Controller
         return redirect(route('registrar.student.show', $request->lrn));
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Student $student)
-    {
-        //
-    }
 
 }

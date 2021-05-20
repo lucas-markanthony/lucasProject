@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h1>Search</h1></div>
+            <div class="card-header"><h4>Search</h4></div>
             <div class="card-body">
                 <form method="POST" action="{{ route('registrar.student.searchRecord') }}">
                 @csrf
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     
-                    <button class="btn-lg btn-primary float-right" type="submit"><i class="cil-magnifying-glass"></i>  Search</button>
+                    <button class="btn-sm btn-primary float-right" type="submit"><i class="cil-magnifying-glass"></i>  Search</button>
                 </form>
             </div> 
         </div>
@@ -65,7 +65,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h2>Search Result</h2></div>
+            <div class="card-header"><h4>Search Result</h4></div>
             <div class="card-body">
                 <div class="mx-2">
                     @if (count($searchResult) >= 1)
@@ -110,7 +110,7 @@
                         </table>
                         {{ $searchResult->links() }}
                     @else
-                        <h3>No Records Found...</h3>
+                        <h4>No Records Found...</h4>
                     @endif
                     
                 </div>

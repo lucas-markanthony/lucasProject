@@ -32,8 +32,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->middlewa
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');
 
 Route::get('/ajax/section/{id}',array('as'=>'ajax.section','uses'=>'HomeController@section'));
-
 Route::get('/ajax/grade/{id}',array('as'=>'ajax.grade','uses'=>'HomeController@grade'));
+Route::get('/ajax/subject/{id}',array('as'=>'ajax.subject','uses'=>'HomeController@subject'));
 
 // Admin Routes
 Route::prefix('admin')->middleware(['auth','auth.isAdmin'])->name('admin.')->group(function(){
@@ -43,6 +43,8 @@ Route::prefix('admin')->middleware(['auth','auth.isAdmin'])->name('admin.')->gro
 
     Route::get('/schoolYear', ['as' => 'schoolYear.index', 'uses' => 'Admin\PaymentSchemeController@schoolyearIndex']);
     Route::post('/schoolYear/addNewSchoolYearConfig', ['as' => 'schoolYear.addNewSchoolYearConfig', 'uses' => 'Admin\PaymentSchemeController@addNewSchoolYearConfig']);
+    Route::get('/subjectGroup', ['as' => 'subjectGroup.index', 'uses' => 'Admin\PaymentSchemeController@subjectGroupIndex']);
+    Route::post('/subjectGroup/addNewSubjectGroupConfig', ['as' => 'subjectGroup.addNewSubjectGroupConfig', 'uses' => 'Admin\PaymentSchemeController@addNewSubjectGroupConfig']);
 });
 
 
@@ -56,6 +58,13 @@ Route::prefix('registrar')->middleware('auth')->name('registrar.')->group(functi
 
     Route::get('/export/registerForm/{id}', ['as' => 'export.registerForm', 'uses' => 'Student\StudentEnrollmentController@registerForm']);
     Route::get('/export/registerFormExport/{id}', ['as' => 'export.registerFormExport', 'uses' => 'Student\StudentEnrollmentController@registerFormExport']);
+    
+    
+    Route::get('/studentRecordIndex', ['as' => 'student.studentRecordIndex', 'uses' => 'Student\StudentController@studentRecordIndex']);
+    Route::get('/studentClassRecordIndex', ['as' => 'student.studentClassRecordIndex', 'uses' => 'Student\StudentController@studentClassRecordIndex']);
+    Route::post('/searchClass', ['as' => 'student.searchClass', 'uses' => 'Student\StudentController@searchClass']);
+    Route::post('/searchStudentRecord', ['as' => 'student.searchStudentRecord', 'uses' => 'Student\StudentController@searchStudentRecord']);
+    Route::post('/updateGrades', ['as' => 'student.updateGrades', 'uses' => 'Student\StudentController@updateGrades']);
 });
 
 // Cashier Routes

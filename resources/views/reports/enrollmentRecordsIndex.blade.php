@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     
-                    <button class="btn-lg btn-primary float-right" type="submit"><i class="cil-magnifying-glass"></i>  Search</button>
+                    <button class="btn-sm btn-primary float-right" type="submit"><i class="cil-magnifying-glass"></i>  Search</button>
                 </form>
             </div> 
         </div>
