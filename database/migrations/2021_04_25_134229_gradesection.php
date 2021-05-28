@@ -17,14 +17,14 @@ class Gradesection extends Migration
         Schema::dropIfExists('subjectGroup');
         Schema::create('gradeSection', function (Blueprint $table) {
             $table->string('schoolyear', 9);
-            $table->integer('grade');
+            $table->string('grade', 3);
             $table->string('section', 100);
             $table->string('subjectgroup', 50);
         });
 
         Schema::create('subjectGroup', function (Blueprint $table) {
             $table->string('name', 50);
-            $table->string('subjectgroup', 200);
+            $table->string('subjectgroup', 500);
         });
     }
 
@@ -37,5 +37,6 @@ class Gradesection extends Migration
     {
         Schema::dropIfExists('gradeSection');
         Schema::dropIfExists('subjectGroup');
+        Schema::dropIfExists('subjectDescriptions');
     }
 }

@@ -199,7 +199,7 @@
         
         jQuery('#section').change(function(e){
             e.preventDefault();
-            getSubjects($('#school_year').val() +"|"+ $('#grade').val()) +"|"+ $('#section').val();
+            getSubjects($('#school_year').val() +"|"+ $('#grade').val()+"|"+ $('#section').val());
         });
 
         jQuery('#grade').change(function(e){

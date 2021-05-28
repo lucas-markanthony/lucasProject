@@ -9,9 +9,12 @@
         data-class="c-sidebar-lg-show" responsive="true">
     <i class="c-icon c-icon-lg cil-menu"></i>
 </button>
-<ul class="c-header-nav mfs-auto">
-</ul>
-<ul class="c-header-nav ">
+
+    <ul class="c-header-nav mfs-auto">
+        
+    </ul>
+
+<ul class="c-header-nav">
     <li class="c-header-nav-item dropdown">
         <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button"
            aria-haspopup="true" aria-expanded="false">
@@ -37,6 +40,3 @@
         </div>
     </li>
 </ul>
-<div class="c-subheader justify-content-between px-3">
-    @yield('breadcrumb')
-</div>

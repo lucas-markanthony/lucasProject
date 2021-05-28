@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -24,7 +27,69 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $date = Carbon::now()->format('Y');
+        $schoolyearList = DB::table('gradeSection')->distinct()->get(['schoolyear']);  
+
+        $currentSchoolYear = DB::table('gradeSection')
+        ->orderBy('schoolyear', 'desc')->distinct()->get(['schoolyear'])->first();
+
+
+        if($currentSchoolYear == null){
+            return view('home',[
+                'isEmpty' => 'true'
+            ]);
+        }else{
+
+        $studentCount = DB::table('student_enrollments')
+            ->select(DB::raw('count(*) as studentCount'))
+            ->where('school_year', '=', $currentSchoolYear->schoolyear)
+            ->first();
+
+        $studentsummary = DB::table('student_enrollments')
+            ->select(DB::raw('count(*) as studentCount, enrollment_status, school_year'))
+            ->where('school_year', '=', $currentSchoolYear->schoolyear)
+            ->groupBy('enrollment_status')
+            ->groupBy('school_year')
+            ->get();
+
+        $enrolled = 0;
+        $completed = 0;
+        $graduated = 0;
+        $failed = 0;
+
+        foreach($studentsummary as $status){
+            switch ($status->enrollment_status) {
+                case "ENROLLED":
+                    $enrolled = $status->studentCount;
+                break;
+                case "COMPLETED":
+                    $completed = $status->studentCount;
+                break;
+                case "GRADUATED":
+                    $graduated = $status->studentCount;
+                break;
+                case "FAILED":
+                case "DROPPED":
+                    $failed = $status->studentCount;
+                break;
+            }
+        
+        }
+
+        //dd($studentsummary);
+
+        return view('home',[
+            'isEmpty' => 'false',
+            'schoolyears' => $schoolyearList,
+            'currentSchoolYear' => $currentSchoolYear,
+            'studentCount' => $studentCount,
+            'enrolled' => $enrolled,
+            'completed' => $completed,
+            'graduated' => $graduated,
+            'failed' => $failed
+        ]);
+            
+        }
     }
 
     public function notfounderror()

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Http\Controllers\LoggingController;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -29,6 +31,9 @@ class StudentController extends Controller
 
     public function studentRecordIndex()
     {
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW STUDENT RECORDS MENU', '');
+
         return view('student.studentRecords', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
         ]);
@@ -36,6 +41,9 @@ class StudentController extends Controller
 
     public function studentClassRecordIndex()
     {
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW CLASS RECORDS MENU', '');
+
         return view('student.studentClassRecords', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
         ]);
@@ -54,6 +62,9 @@ class StudentController extends Controller
                 ->orderBy('students.gender', 'asc')
                 ->orderBy('students.last_name', 'asc')
                 ->orderBy('students.first_name', 'asc')->get();
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'SEARCH CLASS RECORDS', '');
 
         return view('student.studentClassRecords', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
@@ -81,6 +92,9 @@ class StudentController extends Controller
             ->where('enrollmentId', $studentDetails->id)->get();
         
         //dd($studentRecords);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'SEARCH STUDENT RECORDS', '');
 
         return view('student.studentRecords', [
             'studentdetails' => $studentDetails,
@@ -161,6 +175,8 @@ class StudentController extends Controller
                 ->orderBy('students.last_name', 'asc')
                 ->orderBy('students.first_name', 'asc')->get();
 
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'UPDATE GRADES', '');
 
         return view('student.studentClassRecords', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
@@ -177,6 +193,10 @@ class StudentController extends Controller
     {
         $gradedata = DB::table('gradeSection')
         ->select('grade')->distinct()->get(['grade']);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW SEARCH STUDENT MENU', '');
+
         return view('student.search', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
             'gradeList' => $gradedata
@@ -295,6 +315,9 @@ class StudentController extends Controller
 
             //send email to new student
 
+            $logger = new LoggingController;
+            $logger->storeHistory(Auth::user()->id, 'STUDENT REGISTRATION', 'You have successfully Registered New Student');
+
             $request->session()->flash('success', 'You have successfully Registered New Student');
 
             return view('student.register', [
@@ -351,6 +374,9 @@ class StudentController extends Controller
                     ->orderBy('payment_transactions.id', 'desc')->take(10)->get();
 
                 $payments = StudentPayment::where('studentId', $student->id)->orderBy('created_at', 'asc')->get();
+
+                $logger = new LoggingController;
+                $logger->storeHistory(Auth::user()->id, 'SHOW STUDENT DETAILS', $id);
 
                 return view('student.viewStudent', [
                     'student' => $student,
@@ -410,8 +436,11 @@ class StudentController extends Controller
                 
             }
 
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'SHOW STUDENT DETAILS MENU', '');
+
         
-            $students = $query->paginate(10);
+            $students = $query->get();
         return view('student.search', [
             'searchResult' => $students,
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
@@ -421,6 +450,9 @@ class StudentController extends Controller
 
     public function enroll(Request $request, Student $student)
     {
+        $strcount = strlen($request->new_grade);
+
+        //dd($strcount);
         $student = Student::where('lrn', $request->lrn)->first();
         $EnrollmentHistory = StudentEnrollment::where('studentId', $student->id)->orderBy('created_at', 'desc')->get();
         $currentenroll = StudentEnrollment::where('studentId', $student->id)->orderBy('created_at', 'desc')->first();
@@ -432,7 +464,7 @@ class StudentController extends Controller
         }
 
         foreach($EnrollmentHistory as $enrollments){
-            if($enrollments->school_year == $request->new_school_year){
+            if($enrollments->school_year == $request->new_school_year && $strcount <= 2){
                 $request->session()->flash('error', 'This Student already enrolled with this school year: ' . $request->new_school_year);
                 return redirect(route('registrar.student.show', $request->lrn));
             }
@@ -494,6 +526,9 @@ class StudentController extends Controller
             $response = $this->insertStudentRecordContainer($student->id, $enrollment->id, $subjects[$i]);
         }
 
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'STUDENT ENROLLMENT', 'You have successfully Enrolled Student');
+
         $request->session()->flash('success', 'You have successfully Enrolled Student');
         return redirect(route('registrar.student.show', $request->lrn));
     }
@@ -529,6 +564,9 @@ class StudentController extends Controller
             default:
                 $request->session()->flash('error', 'The student is not Enrolled');
         }    
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'UPDATE STUDENT STATUS DETAIL', 'You have successfully Updated Student Status');
 
         $request->session()->flash('success', 'You have successfully Updated Student Status');
         return redirect(route('registrar.student.show', $request->lrn));
@@ -566,6 +604,9 @@ class StudentController extends Controller
             ->update(['enrollment_status' => 'GRADUATED',
             'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()
             ]);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'GRADUATE STUDENT', 'You have successfully Updated Student Status');
 
         $request->session()->flash('success', 'You have successfully Updated Student Status');
         return redirect(route('registrar.student.show', $request->lrn));
@@ -649,6 +690,9 @@ class StudentController extends Controller
                 'section' => $request->new_sectionInput,
                 'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()
             ]);
+
+            $logger = new LoggingController;
+            $logger->storeHistory(Auth::user()->id, 'UPDATE STUDENT STATUS DETAIL', 'You have successfully Updated Student Information');
 
         $request->session()->flash('success', 'You have successfully Updated Student Information');
         return redirect(route('registrar.student.show', $request->lrn));

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentPaymentsTable extends Migration
+class CreateLoggingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateStudentPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_payments', function (Blueprint $table) {
+        //timestamp username action externaldata
+        Schema::create('loggings', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 
-            $table->integer('studentId');
-            $table->integer('enrollmentId');
+            $table->string('user');
+            $table->string('action', 500);
+            $table->string('externaldata', 500);
 
-            $table->string('feeName', 255);
-            $table->integer('fullAmout');
-            $table->integer('balance');
-
-            $table->index('enrollmentId');
+            $table->index('created_at');
         });
     }
 
@@ -35,6 +33,6 @@ class CreateStudentPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_payments');
+        Schema::dropIfExists('loggings');
     }
 }

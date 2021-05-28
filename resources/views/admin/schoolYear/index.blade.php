@@ -47,7 +47,7 @@
                         <div class="col-4">
                             <div class="input-group">
                                 <div class="input-group-prepend"><span class="input-group-text">Grade</span></div>
-                                <input class="form-control" id="grade" type="text" name="grade" placeholder="XX" maxlength="2" onkeypress="return isNumberKey(event)">
+                                <input class="form-control" id="grade" type="text" name="grade" placeholder="XX" maxlength="3">
                             </div>
                         </div>
                         <div class="col-8">
@@ -61,7 +61,7 @@
                         <label for="school-year">Subject Group</label><span class="text-danger"> *</span>
                         <select class="form-control" id="subjectgrp" name="subjectgrp">
                             @foreach ($subjectGroups as $subjectGroup)
-                                <option value="{{ $subjectGroup->name }}">{{ $subjectGroup->name }} - {{ $subjectGroup->subjectgroup }}</option>
+                                <option value="{{ $subjectGroup->name }}">{{ $subjectGroup->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -75,7 +75,7 @@
             <div class="card">
                 <div class="card-header"><h5 id="summaryTabHeader">Summary</h5></div>
                 <div class="card-body">
-                    
+                    <font size="1">
                     <table class="table" id="summaryTable" style="width: 100%">
                         <thead>
                             <th>Grade</th>
@@ -86,6 +86,7 @@
                         <tbody>
                         </tbody>       
                     </table>
+                    </font>
 
                     <div class="mb-2 h4" id="subject" name="subject">
                     </div>
@@ -149,7 +150,7 @@
             var summary = $("#summary").val();
 
             if(grade == '' || section == ''){
-                alert('Please check input');
+                alert('Section already used');
             }else{
                 if(summary !=""){
                     var res = summary.split("|");
@@ -186,6 +187,11 @@
                 $(this).val($(this).val().replace(/[ ]/g, "_"));
             }
         });
+
+        $("#grade").keyup(function() {
+            $(this).val($(this).val().toUpperCase());
+        });
+
 
     });
 

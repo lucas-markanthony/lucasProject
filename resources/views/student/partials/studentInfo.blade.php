@@ -10,10 +10,10 @@
     <button type="button" class="btn-sm btn-dark mr-2" id="fail" name="fail" data-toggle="modal" data-target="#modalFail" data-whatever="@getbootstrap">Fail</button>
     <button type="button" class="btn-sm btn-danger mr-2" id="drop" name="drop" data-toggle="modal" data-target="#modalDrop" data-whatever="@getbootstrap">Drop</button>
 
-    <button type="button" class="btn btn-info mr-2 loadMe" onClick="exportfilePDF({{ $student->lrn }})">
+    <!--button type="button" class="btn btn-info mr-2 loadMe" onClick="exportfilePDF({{ $student->lrn }})">
         <span><i class="cib-adobe-acrobat-reader"></i></span>
         Export Form
-    </button>
+    </button-->
 
     <form id="export-student-form-{{ $student->lrn }}" action="{{ route('registrar.export.registerFormExport', $student->lrn) }}" method="GET" style="display: none">
         @csrf

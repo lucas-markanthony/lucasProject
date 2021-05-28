@@ -78,3 +78,15 @@
     </div>
   </div>
 @endsection
+
+@section('third_party_scripts')
+<script type="text/javascript">
+
+    jQuery(document).ready(function(){
+      $('#btn-usrregister').click(function() {
+        $('.loader_bg').show();
+      });
+    });
+
+    </script>
+@endsection

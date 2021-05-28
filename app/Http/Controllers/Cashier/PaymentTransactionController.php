@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Http\Controllers\LoggingController;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentTransactionController extends Controller
 {
@@ -24,20 +26,14 @@ class PaymentTransactionController extends Controller
     {
         $gradedata = DB::table('gradeSection')
         ->select('grade')->distinct()->get(['grade']);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW CASHIER MENU', '');
+
         return view('cashier.search', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
             'gradeList' => $gradedata
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -77,8 +73,9 @@ class PaymentTransactionController extends Controller
             $year = $item[0];
             $name = $item[1];
             $amount = $item[2];
+            $enrollmentid = $item[3];
 
-            $pay = $this->insertTransaction($request->lrn_payment, $year, $name, $amount, $request->receipt, $request->user);
+            $pay = $this->insertTransaction($request->lrn_payment, $year, $name, $amount, $request->receipt, $request->user, $enrollmentid);
 
             if($pay == false){
                 $request->session()->flash('error', 'Payment Failed for ' . $name . "_" . $year);
@@ -86,13 +83,14 @@ class PaymentTransactionController extends Controller
             }
         }
 
-
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'ADD STUDENT PAYMENT', $request->lrn_payment);
         
         $request->session()->flash('success', 'Payment Success');
         return redirect(route('cashier.student.show', $request->lrn_payment));
     }
 
-    private function insertTransaction($lrn, $schoolYear, $name, $amount, $receiptNo, $user ){
+    private function insertTransaction($lrn, $schoolYear, $name, $amount, $receiptNo, $user, $enrollmentid){
         $response = false;
         $enrollment;
         $newBalance;
@@ -110,7 +108,7 @@ class PaymentTransactionController extends Controller
 
         if($enrollment != null){
             $getCurrentBalance = DB::table('student_payments')
-            ->where('enrollmentId', $enrollment->id)
+            ->where('enrollmentId', $enrollmentid)
                 ->where('feeName', $name)
             ->first();
 
@@ -128,7 +126,7 @@ class PaymentTransactionController extends Controller
         }
 
             $affected = DB::table('student_payments')
-                ->where('enrollmentId', $enrollment->id)
+                ->where('enrollmentId', $enrollmentid)
                 ->where('feeName', $name)
                 ->update(['balance' => $newBalance,
                 'updated_at' => Carbon::now('Asia/Manila')->toDateTimeString()]); 
@@ -188,7 +186,7 @@ class PaymentTransactionController extends Controller
                 $remainingBalance = DB::table('student_payments')
                     ->leftjoin('student_enrollments', 'student_enrollments.id', '=', 'student_payments.enrollmentId')
                     ->select('student_enrollments.school_year', 'student_payments.feeName',
-                            'student_payments.fullAmout','student_payments.balance')
+                            'student_payments.fullAmout','student_payments.balance', 'student_payments.enrollmentId')
                     ->where('student_enrollments.studentId', $student->id)
                     ->where('student_payments.balance', '!=', '0')
                     ->orderBy('student_payments.created_at', 'asc')->get();
@@ -210,6 +208,9 @@ class PaymentTransactionController extends Controller
 
                 //dd(DB::table('gradeSection')->distinct()->get(['schoolyear']));
 
+                $logger = new LoggingController;
+                $logger->storeHistory(Auth::user()->id, 'VIEW STUDENT PAYMENT MENU', $student->id);
+
                 return view('cashier.student', [
                     'student' => $student,
                     'studentEnrollment' => $enrollment,
@@ -221,6 +222,9 @@ class PaymentTransactionController extends Controller
                     'gradeList' => $gradedata
                 ]);
         }else{
+            $logger = new LoggingController;
+            $logger->storeHistory(Auth::user()->id, 'VIEW STUDENT PAYMENT MENU', 'Student not found');
+
             $request->session()->flash('error', 'Student not found');
             return view('cashier.search', [
                 'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
@@ -228,41 +232,6 @@ class PaymentTransactionController extends Controller
             ]);
         }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\payment_transaction  $payment_transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(payment_transaction $payment_transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\payment_transaction  $payment_transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, payment_transaction $payment_transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\payment_transaction  $payment_transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(payment_transaction $payment_transaction)
-    {
-        //
-    }
-
 
     public function searchRecord(Request $request, Student $student)
     {
@@ -299,7 +268,12 @@ class PaymentTransactionController extends Controller
                 }
             }
 
-            $students = $query->paginate(10);
+            $students = $query->get();
+
+            $logger = new LoggingController;
+            $logger->storeHistory(Auth::user()->id, 'SEARCH PAYMENT RECORDS', '');
+
+
         return view('cashier.search', [
             'searchResult' => $students,
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),

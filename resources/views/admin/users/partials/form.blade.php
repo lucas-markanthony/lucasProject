@@ -24,31 +24,8 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">
-                <i class="cil-lock-locked"></i>
-            </span>
-        </div>
-        <input type="password" class="form-control @error('password') is-invalid @enderror"
-            name="password" id="password" placeholder="Password">
-        @error('password')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">
-                <i class="cil-lock-locked"></i>
-            </span>
-        </div>
-        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
-            name="password_confirmation" id="password_confirmation" placeholder="Password Confirmation">
-        @error('password_confirmation')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
+        <input type="hidden" class="form-control @error('password') is-invalid @enderror" name="password" id="password" value="pass12345">
+        <input type="hidden" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" id="password_confirmation" value="pass12345">
 
     <div class="input-group mb-3">
         @foreach($roles as $role)
@@ -62,5 +39,5 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary" id="btn-usrregister">Register</button>
     </div>

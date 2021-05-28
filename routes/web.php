@@ -35,21 +35,24 @@ Route::get('/ajax/section/{id}',array('as'=>'ajax.section','uses'=>'HomeControll
 Route::get('/ajax/grade/{id}',array('as'=>'ajax.grade','uses'=>'HomeController@grade'));
 Route::get('/ajax/subject/{id}',array('as'=>'ajax.subject','uses'=>'HomeController@subject'));
 
-// Admin Routes
-Route::prefix('admin')->middleware(['auth','auth.isAdmin'])->name('admin.')->group(function(){
+// Admin Routes 
+Route::prefix('admin')->middleware(['auth','XssSanitizer'])->name('admin.')->group(function(){
     Route::resource('/users', UserController::class);
+});
+
+Route::prefix('admin')->middleware(['auth','XssSanitizer','auth.isAdmin'])->name('admin.')->group(function(){
     Route::resource('/paymentScheme', PaymentSchemeController::class);
     Route::post('/paymentScheme/addNewFee', ['as' => 'paymentScheme.addNewFee', 'uses' => 'Admin\PaymentSchemeController@addNewFee']);
-
     Route::get('/schoolYear', ['as' => 'schoolYear.index', 'uses' => 'Admin\PaymentSchemeController@schoolyearIndex']);
     Route::post('/schoolYear/addNewSchoolYearConfig', ['as' => 'schoolYear.addNewSchoolYearConfig', 'uses' => 'Admin\PaymentSchemeController@addNewSchoolYearConfig']);
     Route::get('/subjectGroup', ['as' => 'subjectGroup.index', 'uses' => 'Admin\PaymentSchemeController@subjectGroupIndex']);
     Route::post('/subjectGroup/addNewSubjectGroupConfig', ['as' => 'subjectGroup.addNewSubjectGroupConfig', 'uses' => 'Admin\PaymentSchemeController@addNewSubjectGroupConfig']);
+    Route::post('/subjectGroup/deleteSubjectGroupConfig', ['as' => 'subjectGroup.deleteSubjectGroupConfig', 'uses' => 'Admin\PaymentSchemeController@deleteSubjectGroupConfig']);
 });
 
 
 // Registrar Routes
-Route::prefix('registrar')->middleware('auth')->name('registrar.')->group(function(){
+Route::prefix('registrar')->middleware(['auth','XssSanitizer','tab.isRegistrar'])->name('registrar.')->group(function(){
     Route::resource('/student', StudentController::class);
     Route::post('/student/searchRecord', ['as' => 'student.searchRecord', 'uses' => 'Student\StudentController@searchRecord']);
     Route::post('/student/enroll', ['as' => 'student.enroll', 'uses' => 'Student\StudentController@enroll']);
@@ -68,7 +71,7 @@ Route::prefix('registrar')->middleware('auth')->name('registrar.')->group(functi
 });
 
 // Cashier Routes
-Route::prefix('cashier')->middleware('auth')->name('cashier.')->group(function(){
+Route::prefix('cashier')->middleware(['auth','XssSanitizer','tab.isCashier'])->name('cashier.')->group(function(){
     Route::resource('/student', PaymentTransactionController::class);
 
     Route::post('/student/searchRecord', ['as' => 'student.searchRecord', 'uses' => 'Cashier\PaymentTransactionController@searchRecord']);
@@ -76,9 +79,10 @@ Route::prefix('cashier')->middleware('auth')->name('cashier.')->group(function()
 });
 
 // Reports Routes 
-Route::prefix('report')->middleware('auth')->name('report.')->group(function(){
+Route::prefix('report')->middleware(['auth','XssSanitizer'])->name('report.')->group(function(){
     Route::get('/enrollment/index', ['as' => 'enrollment.index', 'uses' => 'Reports\Reports@enrollmentRecordsIndex']);
     Route::get('/transaction/index', ['as' => 'transaction.index', 'uses' => 'Reports\Reports@transactionRecordsIndex']);
 
     Route::post('/enrollment/showSearchEnrollment', ['as' => 'enrollment.showSearchEnrollment', 'uses' => 'Reports\Reports@showSearchEnrollment']);
+    Route::post('/enrollment/showSearchTransactions', ['as' => 'enrollment.showSearchTransactions', 'uses' => 'Reports\Reports@showSearchTransactions']);
 });

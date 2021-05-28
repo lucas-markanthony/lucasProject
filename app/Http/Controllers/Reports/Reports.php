@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Http\Controllers\LoggingController;
+use Illuminate\Support\Facades\Auth;
 
 class Reports extends Controller
 {
@@ -18,6 +20,9 @@ class Reports extends Controller
     {
         $gradedata = DB::table('gradeSection')
         ->select('grade')->distinct()->get(['grade']);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW ENROLLMENT RECORDS MENU', '');
 
         return view('reports.enrollmentRecordsIndex', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
@@ -59,6 +64,11 @@ class Reports extends Controller
         $query->orderBy('students.first_name', 'asc');
         
         $students = $query->paginate(10);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW ENROLLMENT RECORDS', '');
+
+
         return view('reports.enrollmentRecordsIndex', [
             'searchResultData' => $students,
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
@@ -68,13 +78,36 @@ class Reports extends Controller
 
     public function transactionRecordsIndex()
     {
-        $gradedata = DB::table('gradeSection')
-        ->select('grade')->distinct()->get(['grade']);
-        
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW TRANSACTION RECORDS MENU', '');
+
+        return view('reports.transactionRecordsIndex', [
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
+        ]);
+    }
+
+    public function showSearchTransactions(Request $request)
+    {
+        $query = DB::table('payment_transactions');
+
+        if($request->input_type == 'lrn'){
+            $query->where('lrn', '=', $request->text_input);
+        }
+        if($request->input_type == 'receipt'){
+            $query->where('receipt_number', '=', $request->text_input);
+        }
+
+        //$searchResult = 
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'SHOW ENROLLMENT RECORDS', '');
+
         return view('reports.transactionRecordsIndex', [
             'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
-            'gradeList' => $gradedata
+            'searchdata' => $query->orderBy('updated_at', 'desc')->get(),
+            'requestdata' => $request->text_input
         ]);
+
     }
 
     

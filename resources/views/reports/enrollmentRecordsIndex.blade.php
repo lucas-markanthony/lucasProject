@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header"><h3>Enrollment Report</h3></div>
+            <div class="card-header"><h5>Enrollment Report</h5></div>
             <div class="card-body">
                 <form method="POST" action="{{ route('report.enrollment.showSearchEnrollment') }}">
                 @csrf
@@ -163,7 +163,6 @@
                     dataType: "json",
                     success:function(data) {
                         $('select[name="section"]').empty();
-                        $('select[name="section"]').append('<option value="all">all</option>');
                         $.each(data, function(key, value) {
                         $('select[name="section"]').append('<option value="'+ value['section'] +'">'+ value['section'] +'</option>');
                     });
@@ -184,8 +183,10 @@
                     dataType: "json",
                     success:function(data) {
                         $('select[name="grade"]').empty();
-                        $('select[name="grade"]').append('<option value="all">all</option>');
                         $.each(data, function(key, value) {
+                            if(key == 0){
+                                getSection($('#school_year').val() + "|" + value['grade']);
+                            }
                         $('select[name="grade"]').append('<option value="'+ value['grade'] +'">'+ value['grade'] +'</option>');
                     });
                 }

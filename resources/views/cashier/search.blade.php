@@ -40,10 +40,6 @@
                         <div class="form-group col-sm-4">
                             <label for="grade">Grade</label><span class="text-danger"> *</span>
                             <select class="form-control" id="grade" name="grade">
-                                <option value="all">all</option>
-                                @foreach ($gradeList as $grade)
-                                    <option value="{{ $grade->grade }}">{{ $grade->grade }}</option>
-                                @endforeach
                             </select>
                         </div>
                         <div class="form-group col-sm-4">
@@ -108,7 +104,6 @@
                             @endforeach
                             </tbody>
                         </table>
-                        {{ $searchResult->links() }}
                     @else
                         <h3>No Records Found...</h3>
                     @endif
@@ -151,7 +146,6 @@
                     dataType: "json",
                     success:function(data) {
                         $('select[name="section"]').empty();
-                        $('select[name="section"]').append('<option value="all">all</option>');
                         $.each(data, function(key, value) {
                         $('select[name="section"]').append('<option value="'+ value['section'] +'">'+ value['section'] +'</option>');
                     });
@@ -172,8 +166,10 @@
                     dataType: "json",
                     success:function(data) {
                         $('select[name="grade"]').empty();
-                        $('select[name="grade"]').append('<option value="all">all</option>');
                         $.each(data, function(key, value) {
+                            if(key == 0){
+                                getSection($('#school_year').val() + "|" + value['grade']);
+                            }
                         $('select[name="grade"]').append('<option value="'+ value['grade'] +'">'+ value['grade'] +'</option>');
                     });
                 }

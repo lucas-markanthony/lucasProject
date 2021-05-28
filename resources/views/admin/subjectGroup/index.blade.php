@@ -22,8 +22,17 @@
                         @foreach($subjectGroups as $subjectGroup)
                             <tr>
                                 <td>{{ $subjectGroup->name }}</td>
-                                <td>{{ $subjectGroup->subjectgroup }}</td>
-                                <td>test</td>
+                                <td>
+                                    <div>
+                                        @if ($subjectGroup->subjectgroup != "")
+                                            @foreach(explode('|', $subjectGroup->subjectgroup) as $subject) 
+                                                <span class="badge badge-success">{{ $subject }}</span>
+                                            @endforeach
+                                        @endif
+                                        
+                                    </div>
+                                </td>
+                                <td><button type="button" class="btn-sm btn-danger deletebtn mr-2" value="{{ $subjectGroup->name }}" data-toggle="modal" data-target="#modalDeleteYConfig" data-whatever="@getbootstrap">Delete</button></td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -92,6 +101,36 @@
         </div>
     </div>
 </div>
+
+<!-- delete Modal -->
+<div class="modal fade" id="modalDeleteYConfig" tabindex="-1" role="dialog" aria-labelledby="modalDeleteYConfigTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDeleteYConfigTitle">Delete Configuration</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="POST" action="{{ route('admin.subjectGroup.deleteSubjectGroupConfig') }}">
+            @csrf
+            <input type="text" name="subjectgroup" id="subjectgroup" value="">
+            <div class="my-2 mx-2">
+                <div class="alert alert-info" role="alert">
+                    <h5>Are you sure you want to proceed?.</h5>
+                </div>
+            </div>
+          <div class="row mx-3 ">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn-sm btn-danger">Delete</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
     
 @endsection
 
@@ -154,6 +193,10 @@
             if ($(this).val().match(/[ ]/g, "") != null) {
                 $(this).val($(this).val().replace(/[ ]/g, "_"));
             }
+        });
+
+        $(".deletebtn").on("click", function() {  
+            $("#subjectgroup").val($(this).val());
         });
 
     });

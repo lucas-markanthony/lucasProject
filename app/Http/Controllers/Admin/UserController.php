@@ -10,6 +10,9 @@ use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Gate;
 use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\LoggingController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -23,13 +26,15 @@ class UserController extends Controller
         if(Gate::denies('logged-in')){
             return redirect(route('login'));
         }
+        
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW USER MANAGEMENT MENU', '');
+        
+        return view('admin.users.index', [
+            'users' => User::paginate(10),
+            'roles' => Role::all()
+        ]);
 
-        if(Gate::allows('is-admin')){
-            return view('admin.users.index', [
-                'users' => User::paginate(10),
-                'roles' => Role::all()
-            ]);
-        }
 
         dd('access not allowed');
         
@@ -42,17 +47,22 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $validatedData = $request->validated();
+        if(!Gate::allows('is-admin')){
+            $request->session()->flash('error', 'Action not allowed');
+            return redirect(route('admin.users.index'));
+        }
 
+        $validatedData = $request->validated();
         $newuser = new CreateNewUser();
         $user = $newuser->create($request->all());
-
         $user->roles()->sync($request->roles);
-
         Password::sendResetLink($request->only(['email']));
-        
-        $request->session()->flash('success', 'You have successfully Created the user!');
 
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'REGISTER WEB USER', 'You have successfully Created the user! password reset link sent to ' . $request->email);
+
+
+        $request->session()->flash('success', 'You have successfully Created the user! password reset link sent to ' . $request->email);
         return redirect(route('admin.users.index'));
     }
 
@@ -64,9 +74,18 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $auditTrails = DB::table('loggings')
+            ->where('user', $id)
+            ->orderBy('created_at', 'desc')->paginate(10);
+
+            
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW WEB USER', $id);
+
         return view('admin.users.user', [
             'roles' => Role::all(),
-            'user' => User::find($id)
+            'user' => User::find($id),
+            'auditTrails' => $auditTrails 
         ]);
     }
 
@@ -89,6 +108,9 @@ class UserController extends Controller
         $user->update($request->except(['_token', 'roles']));
         $user->roles()->sync($request->roles);
 
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'UPDATE WEB USER', 'You have successfully Updated the user!' . $id);
+
         $request->session()->flash('success', 'You have successfully Updated the user!');
 
         return redirect(route('admin.users.show', $user->id));
@@ -103,6 +125,10 @@ class UserController extends Controller
     public function destroy($id, Request $request)
     {
         User::destroy($id);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'DELETE WEB USER', 'You have successfully Deleted the user!' . $id);
+
         $request->session()->flash('success', 'You have successfully Deleted the user!');
 
         return redirect(route('admin.users.index'));

@@ -56,6 +56,8 @@ class CreateStudentsTable extends Migration
             $table->string('e_schoolyr',50)->nullable();
             $table->string('e_address',255)->nullable();
 
+            $table->index('lrn');
+
         });
     }
 

@@ -7,6 +7,8 @@ use App\Models\paymentScheme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\LoggingController;
+use Illuminate\Support\Facades\Auth;
 
 
 class PaymentSchemeController extends Controller
@@ -18,7 +20,9 @@ class PaymentSchemeController extends Controller
      */
     public function index()
     {
-        
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW PAYMENT SCHEME MENU', '');
+
         return view('admin.paymentScheme.index', [
             'paymentProfiles' => paymentScheme::all()
         ]);
@@ -29,14 +33,20 @@ class PaymentSchemeController extends Controller
     {
         $subjectGroup = DB::table('subjectGroup')->get();
 
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW SCHOOL YEAR CONFIGURATION MENU', '');
+
         return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup,
-            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear']),
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
         ]);
     }
 
     public function subjectGroupIndex()
     {
         $subjectGroup = DB::table('subjectGroup')->paginate(10);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW SUBJECT GROUP CONFIGURATION MENU', '');
 
         return view('admin.subjectGroup.index', ['subjectGroups' => $subjectGroup]);
     }
@@ -57,7 +67,9 @@ class PaymentSchemeController extends Controller
 
         if($checkSchoolYear != null || $checkSchoolYear != ''){
             $request->session()->flash('error', 'School year already configured');
-            return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+            return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup,
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
+            ]);
         }
 
         //dd($paymentList);
@@ -73,11 +85,18 @@ class PaymentSchemeController extends Controller
 
         if($response == false){
             $request->session()->flash('error', 'Config failed');
-            return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+            return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup,
+            'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
+            ]);
         }
 
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'ADD NEW SCHOOL YEAR CONFIGURATION', 'Config success');
+
         $request->session()->flash('success', 'Config success');
-        return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup]);
+        return view('admin.schoolYear.index', ['subjectGroups' => $subjectGroup,
+        'schoolyears' =>  DB::table('gradeSection')->distinct()->get(['schoolyear'])
+        ]);
     }
 
     public function addNewSubjectGroupConfig(Request $request)
@@ -115,12 +134,17 @@ class PaymentSchemeController extends Controller
             'subjectgroup' => $finalString
         ]);
 
+        $subjectGroup = DB::table('subjectGroup')->paginate(10);
+
         if($response1 == true){
+            $logger = new LoggingController;
+            $logger->storeHistory(Auth::user()->id, 'ADD NEW SUBJECT GROUP CONFIGURATION', 'Config success');
+
             $request->session()->flash('success', 'Config success');
-            return view('admin.subjectGroup.index', []);
+            return view('admin.subjectGroup.index', ['subjectGroups' => $subjectGroup]);
         }else{
             $request->session()->flash('error', 'Configuration failed. Please try again');
-            return view('admin.subjectGroup.index', []);
+            return view('admin.subjectGroup.index', ['subjectGroups' => $subjectGroup]);
         }
     }
 
@@ -137,23 +161,26 @@ class PaymentSchemeController extends Controller
             return $response1;
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function deleteSubjectGroupConfig(Request $request)
     {
-        //
+        $response1 = DB::table('subjectGroup')->where('name', '=', $request->subjectgroup)->delete();
+
+        $subjectGroup = DB::table('subjectGroup')->paginate(10);
+
+        if($response1 == true){
+
+            $logger = new LoggingController;
+            $logger->storeHistory(Auth::user()->id, 'DELETE SUBJECT GROUP CONFIGURATION', 'Config success');
+
+
+            $request->session()->flash('success', 'Config success');
+            return view('admin.subjectGroup.index', ['subjectGroups' => $subjectGroup]);
+        }else{
+            $request->session()->flash('error', 'Config failed');
+            return view('admin.subjectGroup.index', ['subjectGroups' => $subjectGroup]);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
             $validated = $request->validate([
@@ -167,8 +194,10 @@ class PaymentSchemeController extends Controller
             $paymentScheme->fees = $initalFee;
             $paymentScheme->save();
 
-            $request->session()->flash('success', 'You have successfully Created the Profile');
+            $logger = new LoggingController;
+            $logger->storeHistory(Auth::user()->id, 'ADD NEW PAYMENT SCHEME CONFIGURATION', 'You have successfully Created the Profile');
 
+            $request->session()->flash('success', 'You have successfully Created the Profile');
             return view('admin.paymentScheme.index',[
                 'paymentSchemedata' => paymentScheme::where('name',$request->name)->first(),
                 'paymentProfiles' => paymentScheme::all()
@@ -183,44 +212,23 @@ class PaymentSchemeController extends Controller
      */
     public function show($id)
     {
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'VIEW PAYMENT SCHEME MENU', '');
+
         return view('admin.paymentScheme.index',[
             'paymentSchemedata' => paymentScheme::where('id',$id)->first(),
             'paymentProfiles' => paymentScheme::all()
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\paymentScheme  $paymentScheme
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(paymentScheme $paymentScheme)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\paymentScheme  $paymentScheme
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, paymentScheme $paymentScheme)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\paymentScheme  $paymentScheme
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id, Request $request)
     {
         paymentScheme::destroy($id);
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'DELETE PAYMENTSCHEME CONFIGURATION', 'You have successfully Deleted the profile!');
+
         $request->session()->flash('success', 'You have successfully Deleted the profile!');
 
         return view('admin.paymentScheme.index', [
@@ -261,6 +269,9 @@ class PaymentSchemeController extends Controller
 
         $profile->fees = $profile_fee;
         $profile->save();
+
+        $logger = new LoggingController;
+        $logger->storeHistory(Auth::user()->id, 'ADD PAYMENTSCHEME FEE', 'You have successfully Updated the Profile');
 
         $request->session()->flash('success', 'You have successfully Updated the Profile');
 

@@ -97,18 +97,16 @@
                     <font size="2">
                         <table class="table table-responsive-sm table-bordered table-striped table-sm">
                             <colgroup>
-                                <col span="1" style="width: 15%;">
-                                <col span="1" style="width: 60%;">
-                                <col span="1" style="width: 5%;">
-                                <col span="1" style="width: 5%;">
-                                <col span="1" style="width: 5%;">
-                                <col span="1" style="width: 5%;">
-                                <col span="1" style="width: 5%;">
+                                <col span="1" style="width: 50%;">
+                                <col span="1" style="width: 10%;">
+                                <col span="1" style="width: 10%;">
+                                <col span="1" style="width: 10%;">
+                                <col span="1" style="width: 10%;">
+                                <col span="1" style="width: 10%;">
                             </colgroup>
 
                             <thead>
                                 <tr>
-                                    <th>LRN</th>
                                     <th>Subject</th>
                                     <th>1st Grading</th>
                                     <th>2nd Grading</th>
@@ -120,7 +118,6 @@
                             <tbody>
                             @foreach($studentrecords as $studentrecord)
                                 <tr>
-                                    <td></td>
                                     <td>{{ $studentrecord->subject }}</td>
                                     <td><input type="text" size="5" class="inputGrid1 gradeInput" id="grade1" name="grade1" onkeypress="return isNumberKey(event)" value="{{ $studentrecord->first_grading }}" readonly></td>
                                     <td><input type="text" size="5" class="inputGrid1 gradeInput" id="grade1" name="grade1" onkeypress="return isNumberKey(event)" value="{{ $studentrecord->second_grading }}" readonly></td>

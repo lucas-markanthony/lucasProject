@@ -43,7 +43,7 @@
                                 <tr>
                                     <td>
                                         <div class="form-check">
-                                            <input class="form-check-input checktrigger checkalltrigger-{{ $schoolyear->school_year }}" type="checkbox" value="{{ $schoolyear->school_year }}|{{ $item->feeName }}|{{ $item->fullAmout }}|{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount" id="{{ $item->school_year }}-{{ $item->feeName }}-checkBox">
+                                            <input class="form-check-input checktrigger checkalltrigger-{{ $schoolyear->school_year }}" type="checkbox" value="{{ $schoolyear->school_year }}|{{ $item->feeName }}|{{ $item->fullAmout }}|{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount|{{ $item->enrollmentId }}" id="{{ $item->school_year }}-{{ $item->feeName }}-checkBox">
                                         </div>
                                     </td>
                                     <td>
@@ -58,12 +58,12 @@
                                     <td>
                                         <div class="col-md-9 col-form-label">
                                             <div class="form-check form-check-inline mr-1">
-                                                <input class="form-check-input radioTrigger" id="{{ $schoolyear->school_year }}-{{ $item->feeName }}-radio1" type="radio" value="Full|{{ $item->fullAmout }}|{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount" name="{{ $schoolyear->school_year }}-{{ $item->feeName }}-radios" checked>
-                                                <label class="form-check-label" for="{{ $schoolyear->school_year }}-{{ $item->feeName }}-radio1">Full</label>
+                                                <input class="form-check-input radioTrigger" id="{{ $schoolyear->school_year }}-{{ $item->feeName }}-{{ $item->enrollmentId }}-radio1" type="radio" value="Full|{{ $item->fullAmout }}|{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount|{{ $item->enrollmentId }}" name="{{ $schoolyear->school_year }}-{{ $item->feeName }}-{{ $item->enrollmentId }}-radios" checked>
+                                                <label class="form-check-label" for="{{ $schoolyear->school_year }}-{{ $item->feeName }}-{{ $item->enrollmentId }}-radio1">Full</label>
                                             </div>
                                             <div class="form-check form-check-inline mr-1">
-                                                <input class="form-check-input radioTrigger" id="{{ $schoolyear->school_year }}-{{ $item->feeName }}-radio2" type="radio" value="Partial|{{ $item->fullAmout }}|{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount" name="{{ $schoolyear->school_year }}-{{ $item->feeName }}-radios">
-                                                <label class="form-check-label" for="{{ $schoolyear->school_year }}-{{ $item->feeName }}-radio2">Partial</label>
+                                                <input class="form-check-input radioTrigger" id="{{ $schoolyear->school_year }}-{{ $item->feeName }}-{{ $item->enrollmentId }}-radio2" type="radio" value="Partial|{{ $item->fullAmout }}|{{ $schoolyear->school_year }}-{{ $item->feeName }}-paymentAmount|{{ $item->enrollmentId }}" name="{{ $schoolyear->school_year }}-{{ $item->feeName }}-{{ $item->enrollmentId }}-radios">
+                                                <label class="form-check-label" for="{{ $schoolyear->school_year }}-{{ $item->feeName }}-{{ $item->enrollmentId }}-radio2">Partial</label>
                                             </div>
                                         </div>
                                     </td>
@@ -323,17 +323,17 @@
                     var inputValue = $(this).val();
                     var res = inputValue.split("|");
                     var txtbx = "#"+res[0]+"-"+res[1]+"-paymentAmount"
-                    var radio1 = "#"+res[0]+"-"+res[1]+"-radio1"
-                    var radio2 = "#"+res[0]+"-"+res[1]+"-radio2"
+                    var radio1 = "#"+res[0]+"-"+res[1]+"-"+res[4]+"-radio1"
+                    var radio2 = "#"+res[0]+"-"+res[1]+"-"+res[4]+"-radio2"
                     var amount = $(txtbx).val();
 
                     if ($(this).is(':checked')) {
                         $(txtbx).prop('readOnly', true);
                         $(radio1).prop('disabled', true);  
                         $(radio2).prop('disabled', true);  
-                        addpayment(res[1],res[0], amount);
+                        addpayment(res[1],res[0], amount, res[4]);
                     }else{
-                        removePayment(res[1],res[0], amount);
+                        removePayment(res[1],res[0], amount, res[4]);
                         $(txtbx).prop('readOnly', false);
                         $(radio1).prop('disabled', false); 
                         $(radio2).prop('disabled', false); 
@@ -383,16 +383,16 @@
                 return true;
             }
 
-            function addpayment($name, $schoolyr, $amount){
+            function addpayment($name, $schoolyr, $amount, $enrollmentid){
                 var arrayInput = $("#paymentSummary").val();
-                    arrayInput += "|" + $schoolyr + '~' + $name + '~' + $amount;
+                    arrayInput += "|" + $schoolyr + '~' + $name + '~' + $amount + '~' + $enrollmentid;
 
                 $("#paymentSummary").val(arrayInput);
                 
             }
 
-            function removePayment($name, $schoolyr, $amount){
-                var input = $schoolyr + '~' + $name + '~' + $amount;
+            function removePayment($name, $schoolyr, $amount, $enrollmentid){
+                var input = $schoolyr + '~' + $name + '~' + $amount + '~' + $enrollmentid;
                 var arrayInput = $("#paymentSummary").val();
                 var parseInput = arrayInput.split("|");
                 var newArrayInput = "";

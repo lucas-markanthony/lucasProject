@@ -27,6 +27,9 @@ class CreatePaymentTransactionsTable extends Migration
             $table->string('receipt_number',50);
             $table->string('cashier',150);
             $table->string('status',10);
+
+            $table->index('lrn');
+            $table->index('receipt_number');
         });
     }
 

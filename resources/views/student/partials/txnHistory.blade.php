@@ -1,10 +1,13 @@
 @if (count($transactionHistory) >= 1)
+<font size="1">
 <table class="table table-responsive-sm table-bordered table-striped table-sm" name="txnHistory" id="txnHistory">
     <thead>
         <tr>
             <th>#Id</th>
             <th>Timestamp</th>
             <th>lrn</th>
+            <th>Full Amount</th>
+            <th>Payment Type</th>
             <th>Amount</th>
             <th>Remaining Balance</th>
             <th>External Data</th>
@@ -19,6 +22,8 @@
             <td scope="row">{{ $item->id }}</td>
             <td>{{ $item->created_at }}</td>
             <td>{{ $item->lrn }}</td>
+            <td>{{ $item->full_amount }}</td>
+            <td>{{ $item->payment }}</td>
             <td>{{ $item->amount }}</td>
             <td>{{ $item->remaining_balance }}</td>
             <td>{{ $item->scheme_name }}</td>
@@ -28,13 +33,13 @@
                 <div>
                     @switch($item->status)
                         @case('SUCCESS')
-                            <h5><span class="badge badge-success">{{ $item->status }}</span></h5>
+                            <h6><span class="badge badge-success">{{ $item->status }}</span></h6>
                         @break
                         @case('FAILED')
-                            <h5><span class="badge badge-info">{{ $item->status }}</span></h5>
+                            <h6><span class="badge badge-info">{{ $item->status }}</span></h6>
                         @break
                         @default
-                            <h5><span class="badge badge-dark">{{ $item->status }}</span></h5>
+                            <h6><span class="badge badge-dark">{{ $item->status }}</span></h6>
                     @endswitch
                 </div>
             </td>
@@ -42,6 +47,7 @@
     @endforeach
     </tbody>
 </table>
+</font>
 @else
     <h3>No Records Found...</h3>
 @endif

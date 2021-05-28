@@ -297,7 +297,7 @@
             $('#enroll').hide();
             $('#drop').show();
             $('#fail').show();
-            if($grade == '12'){
+            if($grade == '12' || $grade == '12b' || $grade == '12B'){
                 $('#complete').hide();
                 $('#graduate').show();
             }else{
@@ -309,7 +309,7 @@
             $('#drop').hide();
             $('#fail').show();
             $('#enroll').show();
-            if($grade == '12'){
+            if($grade == '12' || $grade == '12b' || $grade == '12B'){
                 $('#complete').hide();
                 $('#graduate').show();
             }else{
@@ -328,7 +328,7 @@
             $('#drop').show();
             $('#fail').hide();
             $('#enroll').show();
-            if($grade == '12'){
+            if($grade == '12' || $grade == '12b' || $grade == '12B'){
                 $('#complete').hide();
                 $('#graduate').show();
             }else{

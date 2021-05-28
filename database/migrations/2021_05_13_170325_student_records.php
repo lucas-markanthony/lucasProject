@@ -33,6 +33,8 @@ class StudentRecords extends Migration
             $table->string('final_grading', 5)->nullable();
             $table->string('final_grading_status', 50)->default('PENDING');
 
+            $table->index('enrollmentId');
+
         });
     }
 

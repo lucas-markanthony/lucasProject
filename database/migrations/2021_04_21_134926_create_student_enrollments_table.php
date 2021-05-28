@@ -19,12 +19,16 @@ class CreateStudentEnrollmentsTable extends Migration
 
             //school year
             $table->string('school_year',9);
-            $table->integer('grade');
+            $table->string('grade',3);
             $table->string('section',50);
 
             $table->integer('studentId');
             $table->string('schemeID',250);
             $table->string('enrollment_status',50);
+
+            $table->index('school_year');
+            $table->index('grade');
+            $table->index('section');
 
         });
     }
