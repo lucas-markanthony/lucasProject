@@ -167,10 +167,10 @@ class StudentController extends Controller
         $classRecords = DB::table('students')
                 ->join('student_enrollments', 'students.id', '=', 'student_enrollments.studentId')
                 ->join('student_records', 'student_enrollments.id', '=', 'student_records.enrollmentId')
-                ->where('student_enrollments.school_year', $request->school_year)
-                ->where('student_enrollments.grade', $request->grade)
-                ->where('student_enrollments.section', $request->section)
-                ->where('student_records.subject', $request->subject)
+                ->where('student_enrollments.school_year', $request->save_details_schoolyear)
+                ->where('student_enrollments.grade', $request->save_details_grade)
+                ->where('student_enrollments.section', $request->save_details_section)
+                ->where('student_records.subject', $request->save_details_subject)
                 ->orderBy('students.gender', 'asc')
                 ->orderBy('students.last_name', 'asc')
                 ->orderBy('students.first_name', 'asc')->get();
@@ -316,7 +316,7 @@ class StudentController extends Controller
             //send email to new student
 
             $logger = new LoggingController;
-            $logger->storeHistory(Auth::user()->id, 'STUDENT REGISTRATION', 'You have successfully Registered New Student');
+            $logger->storeHistory(Auth::user()->id, 'STUDENT REGISTRATION', $request->lrn);
 
             $request->session()->flash('success', 'You have successfully Registered New Student');
 

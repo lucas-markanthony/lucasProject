@@ -66,6 +66,6 @@ class Kernel extends HttpKernel
         'tab.isCashier' => \App\Http\Middleware\AccessCashier::class,
         'tab.isTeacher' => \App\Http\Middleware\AccessTeacher::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'XssSanitizer' => \App\Http\Middleware\XssSanitizer::class,
+        'XssSanitizer' => \App\Http\Middleware\XssSanitization::class,
     ];
 }

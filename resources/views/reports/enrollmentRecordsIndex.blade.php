@@ -74,9 +74,9 @@
                             <thead>
                                 <tr>
                                     <th>LRN</th>
+                                    <th>Last Name</th>
                                     <th>First Name</th>
                                     <th>Middle Name</th>
-                                    <th>Last Name</th>
                                     <th>Gender</th>
                                     <th>School Year</th>
                                     <th>Grade</th>
@@ -88,9 +88,9 @@
                             @foreach($searchResultData as $student)
                                 <tr>
                                     <td scope="row">{{ $student->lrn }}</td>
+                                    <td>{{ $student->last_name }} {{ $student->ext_name }}</td>
                                     <td>{{ $student->first_name }}</td>
                                     <td>{{ $student->middle_name }}</td>
-                                    <td>{{ $student->last_name }} {{ $student->ext_name }}</td>
                                     <td>{{ $student->gender }}</td>
                                     <td>{{ $student->school_year }}</td>
                                     <td>{{ $student->grade }}</td>

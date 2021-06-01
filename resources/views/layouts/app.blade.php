@@ -41,7 +41,7 @@
     </div>
 
     <footer class="c-footer">
-        <div><a href="#">LBMHS ADMIN v2.0</a> © 2021 Mark Lucas.</div>
+        <div><a href="#">LBMHS ADMIN v2.0</a> © 2021 <a href="https://www.markanthonylucas.com">Mark Lucas</a>.</div>
         <div class="mfs-auto">Powered by&nbsp;<a href="https://coreui.io/">CoreUI</a></div>
     </footer>
 </div>
